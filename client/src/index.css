@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    --muted: 210 40% 98%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 226 100% 97%;
+    --accent-foreground: 243 75% 45%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 243 75% 59%;
+    --primary: 243 75% 59%;          /* indigo-600 */
+    --primary-foreground: 0 0% 100%;
+    --destructive: 347 77% 50%;      /* rose-600 */
+    --destructive-foreground: 0 0% 100%;
+    --success: 160 84% 39%;          /* emerald-500 */
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;           /* amber-500 */
+    --warning-foreground: 0 0% 100%;
+    --radius: 0.75rem;
+
+    /* Màu biểu đồ (thứ tự categorical cố định, đã kiểm tra mù màu) */
+    --chart-1: #4f46e5;
+    --chart-2: #eb6834;
+    --chart-3: #1baf7a;
+    --chart-grid: #e2e8f0;
+    --chart-axis: #94a3b8;
+  }
+
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: Inter, system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+}
+
+@layer utilities {
+  .tabular { font-variant-numeric: tabular-nums; }
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--border) / 0.6) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--border) / 0.6) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+  .mask-fade-b { mask-image: linear-gradient(to bottom, black 55%, transparent); }
+  .mask-fade-x { mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent); }
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(100deg, #4f46e5 10%, #7c3aed 50%, #0ea5e9 90%);
+  }
+}
+
+/* Recharts: bỏ viền focus mặc định */
+.recharts-wrapper *:focus { outline: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
