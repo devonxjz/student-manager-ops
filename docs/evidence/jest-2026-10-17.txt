@@ -1,0 +1,766 @@
+
+> student-manager@1.0.0 test
+> jest --runInBand
+
+PASS tests/admin.crud.test.js
+  ● Console
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'INTEGER' with UNSIGNED or ZEROFILL. Plain 'INTEGER' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mUser[39m [33m=[39m sequelize[33m.[39mdefine([32m'User'[39m[33m,[39m {
+     [90m   |[39m                          [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     username[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     passwordHash[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mCHAR[39m([35m60[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new INTEGER (node_modules/sequelize/src/dialects/sqlite/data-types.js:146:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at User.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/user.model.js:5:26)
+      at Object.<anonymous> (src/models/index.js:8:32)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.crud.test.js:4:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'SMALLINT' with UNSIGNED or ZEROFILL. Plain 'SMALLINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mClass[39m [33m=[39m sequelize[33m.[39mdefine([32m'Class'[39m[33m,[39m {
+     [90m   |[39m                           [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     classCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m100[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new SMALLINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:132:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Class.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/class.model.js:5:27)
+      at Object.<anonymous> (src/models/index.js:10:34)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.crud.test.js:4:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'TINYINT' with UNSIGNED or ZEROFILL. Plain 'TINYINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mCourse[39m [33m=[39m sequelize[33m.[39mdefine([32m'Course'[39m[33m,[39m {
+     [90m   |[39m                            [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     courseCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m150[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new TINYINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:125:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Course.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/course.model.js:5:28)
+      at Object.<anonymous> (src/models/index.js:12:36)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.crud.test.js:4:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'BIGINT' with UNSIGNED or ZEROFILL. Plain 'BIGINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 4 |[39m   [36mconst[39m [33mAuditLog[39m [33m=[39m sequelize[33m.[39mdefine([32m'AuditLog'[39m[33m,[39m {
+     [90m   |[39m                              [31m[1m^[22m[39m
+     [90m 5 |[39m     [33m...[39mpk([33mDataTypes[39m[33m,[39m [33mDataTypes[39m[33m.[39m[33mBIGINT[39m[33m.[39m[33mUNSIGNED[39m)[33m,[39m
+     [90m 6 |[39m     action[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD USER_ROLE_CHANGED[39m
+     [90m 7 |[39m     entityType[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m30[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD students[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new BIGINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:153:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at AuditLog.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/auditLog.model.js:4:30)
+      at Object.<anonymous> (src/models/index.js:14:40)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.crud.test.js:4:5)
+
+PASS tests/teacher.test.js
+  ● Console
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'INTEGER' with UNSIGNED or ZEROFILL. Plain 'INTEGER' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mUser[39m [33m=[39m sequelize[33m.[39mdefine([32m'User'[39m[33m,[39m {
+     [90m   |[39m                          [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     username[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     passwordHash[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mCHAR[39m([35m60[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new INTEGER (node_modules/sequelize/src/dialects/sqlite/data-types.js:146:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at User.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/user.model.js:5:26)
+      at Object.<anonymous> (src/models/index.js:8:32)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/teacher.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'SMALLINT' with UNSIGNED or ZEROFILL. Plain 'SMALLINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mClass[39m [33m=[39m sequelize[33m.[39mdefine([32m'Class'[39m[33m,[39m {
+     [90m   |[39m                           [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     classCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m100[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new SMALLINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:132:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Class.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/class.model.js:5:27)
+      at Object.<anonymous> (src/models/index.js:10:34)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/teacher.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'TINYINT' with UNSIGNED or ZEROFILL. Plain 'TINYINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mCourse[39m [33m=[39m sequelize[33m.[39mdefine([32m'Course'[39m[33m,[39m {
+     [90m   |[39m                            [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     courseCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m150[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new TINYINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:125:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Course.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/course.model.js:5:28)
+      at Object.<anonymous> (src/models/index.js:12:36)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/teacher.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'BIGINT' with UNSIGNED or ZEROFILL. Plain 'BIGINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 4 |[39m   [36mconst[39m [33mAuditLog[39m [33m=[39m sequelize[33m.[39mdefine([32m'AuditLog'[39m[33m,[39m {
+     [90m   |[39m                              [31m[1m^[22m[39m
+     [90m 5 |[39m     [33m...[39mpk([33mDataTypes[39m[33m,[39m [33mDataTypes[39m[33m.[39m[33mBIGINT[39m[33m.[39m[33mUNSIGNED[39m)[33m,[39m
+     [90m 6 |[39m     action[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD USER_ROLE_CHANGED[39m
+     [90m 7 |[39m     entityType[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m30[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD students[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new BIGINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:153:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at AuditLog.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/auditLog.model.js:4:30)
+      at Object.<anonymous> (src/models/index.js:14:40)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/teacher.test.js:3:5)
+
+PASS tests/auth.test.js
+  ● Console
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'INTEGER' with UNSIGNED or ZEROFILL. Plain 'INTEGER' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mUser[39m [33m=[39m sequelize[33m.[39mdefine([32m'User'[39m[33m,[39m {
+     [90m   |[39m                          [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     username[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     passwordHash[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mCHAR[39m([35m60[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new INTEGER (node_modules/sequelize/src/dialects/sqlite/data-types.js:146:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at User.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/user.model.js:5:26)
+      at Object.<anonymous> (src/models/index.js:8:32)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/auth.test.js:5:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'SMALLINT' with UNSIGNED or ZEROFILL. Plain 'SMALLINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mClass[39m [33m=[39m sequelize[33m.[39mdefine([32m'Class'[39m[33m,[39m {
+     [90m   |[39m                           [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     classCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m100[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new SMALLINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:132:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Class.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/class.model.js:5:27)
+      at Object.<anonymous> (src/models/index.js:10:34)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/auth.test.js:5:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'TINYINT' with UNSIGNED or ZEROFILL. Plain 'TINYINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mCourse[39m [33m=[39m sequelize[33m.[39mdefine([32m'Course'[39m[33m,[39m {
+     [90m   |[39m                            [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     courseCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m150[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new TINYINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:125:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Course.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/course.model.js:5:28)
+      at Object.<anonymous> (src/models/index.js:12:36)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/auth.test.js:5:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'BIGINT' with UNSIGNED or ZEROFILL. Plain 'BIGINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 4 |[39m   [36mconst[39m [33mAuditLog[39m [33m=[39m sequelize[33m.[39mdefine([32m'AuditLog'[39m[33m,[39m {
+     [90m   |[39m                              [31m[1m^[22m[39m
+     [90m 5 |[39m     [33m...[39mpk([33mDataTypes[39m[33m,[39m [33mDataTypes[39m[33m.[39m[33mBIGINT[39m[33m.[39m[33mUNSIGNED[39m)[33m,[39m
+     [90m 6 |[39m     action[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD USER_ROLE_CHANGED[39m
+     [90m 7 |[39m     entityType[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m30[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD students[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new BIGINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:153:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at AuditLog.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/auditLog.model.js:4:30)
+      at Object.<anonymous> (src/models/index.js:14:40)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/auth.test.js:5:5)
+
+PASS tests/crud.service.test.js
+  ● Console
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'INTEGER' with UNSIGNED or ZEROFILL. Plain 'INTEGER' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mUser[39m [33m=[39m sequelize[33m.[39mdefine([32m'User'[39m[33m,[39m {
+     [90m   |[39m                          [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     username[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     passwordHash[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mCHAR[39m([35m60[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new INTEGER (node_modules/sequelize/src/dialects/sqlite/data-types.js:146:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at User.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/user.model.js:5:26)
+      at Object.<anonymous> (src/models/index.js:8:32)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/crud.service.test.js:3:38)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'SMALLINT' with UNSIGNED or ZEROFILL. Plain 'SMALLINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mClass[39m [33m=[39m sequelize[33m.[39mdefine([32m'Class'[39m[33m,[39m {
+     [90m   |[39m                           [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     classCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m100[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new SMALLINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:132:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Class.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/class.model.js:5:27)
+      at Object.<anonymous> (src/models/index.js:10:34)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/crud.service.test.js:3:38)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'TINYINT' with UNSIGNED or ZEROFILL. Plain 'TINYINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mCourse[39m [33m=[39m sequelize[33m.[39mdefine([32m'Course'[39m[33m,[39m {
+     [90m   |[39m                            [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     courseCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m150[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new TINYINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:125:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Course.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/course.model.js:5:28)
+      at Object.<anonymous> (src/models/index.js:12:36)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/crud.service.test.js:3:38)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'BIGINT' with UNSIGNED or ZEROFILL. Plain 'BIGINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 4 |[39m   [36mconst[39m [33mAuditLog[39m [33m=[39m sequelize[33m.[39mdefine([32m'AuditLog'[39m[33m,[39m {
+     [90m   |[39m                              [31m[1m^[22m[39m
+     [90m 5 |[39m     [33m...[39mpk([33mDataTypes[39m[33m,[39m [33mDataTypes[39m[33m.[39m[33mBIGINT[39m[33m.[39m[33mUNSIGNED[39m)[33m,[39m
+     [90m 6 |[39m     action[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD USER_ROLE_CHANGED[39m
+     [90m 7 |[39m     entityType[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m30[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD students[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new BIGINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:153:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at AuditLog.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/auditLog.model.js:4:30)
+      at Object.<anonymous> (src/models/index.js:14:40)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/crud.service.test.js:3:38)
+
+PASS tests/admin.users.test.js
+  ● Console
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'INTEGER' with UNSIGNED or ZEROFILL. Plain 'INTEGER' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mUser[39m [33m=[39m sequelize[33m.[39mdefine([32m'User'[39m[33m,[39m {
+     [90m   |[39m                          [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     username[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     passwordHash[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mCHAR[39m([35m60[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new INTEGER (node_modules/sequelize/src/dialects/sqlite/data-types.js:146:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at User.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/user.model.js:5:26)
+      at Object.<anonymous> (src/models/index.js:8:32)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.users.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'SMALLINT' with UNSIGNED or ZEROFILL. Plain 'SMALLINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mClass[39m [33m=[39m sequelize[33m.[39mdefine([32m'Class'[39m[33m,[39m {
+     [90m   |[39m                           [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     classCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m100[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new SMALLINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:132:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Class.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/class.model.js:5:27)
+      at Object.<anonymous> (src/models/index.js:10:34)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.users.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'TINYINT' with UNSIGNED or ZEROFILL. Plain 'TINYINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 3 |[39m
+     [90m 4 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 5 |[39m   [36mconst[39m [33mCourse[39m [33m=[39m sequelize[33m.[39mdefine([32m'Course'[39m[33m,[39m {
+     [90m   |[39m                            [31m[1m^[22m[39m
+     [90m 6 |[39m     [33m...[39mpk([33mDataTypes[39m)[33m,[39m
+     [90m 7 |[39m     courseCode[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m20[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m[33m,[39m unique[33m:[39m [36mtrue[39m }[33m,[39m
+     [90m 8 |[39m     name[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m150[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new TINYINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:125:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at Course.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/course.model.js:5:28)
+      at Object.<anonymous> (src/models/index.js:12:36)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.users.test.js:3:5)
+
+    console.warn
+      (sequelize) Warning: SQLite does not support 'BIGINT' with UNSIGNED or ZEROFILL. Plain 'BIGINT' will be used instead. 
+      >> Check: https://www.sqlite.org/datatype3.html
+
+    [0m [90m 2 |[39m
+     [90m 3 |[39m module[33m.[39mexports [33m=[39m (sequelize[33m,[39m [33mDataTypes[39m) [33m=>[39m {
+    [31m[1m>[22m[39m[90m 4 |[39m   [36mconst[39m [33mAuditLog[39m [33m=[39m sequelize[33m.[39mdefine([32m'AuditLog'[39m[33m,[39m {
+     [90m   |[39m                              [31m[1m^[22m[39m
+     [90m 5 |[39m     [33m...[39mpk([33mDataTypes[39m[33m,[39m [33mDataTypes[39m[33m.[39m[33mBIGINT[39m[33m.[39m[33mUNSIGNED[39m)[33m,[39m
+     [90m 6 |[39m     action[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m50[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD USER_ROLE_CHANGED[39m
+     [90m 7 |[39m     entityType[33m:[39m { type[33m:[39m [33mDataTypes[39m[33m.[39m[33mSTRING[39m([35m30[39m)[33m,[39m allowNull[33m:[39m [36mfalse[39m }[33m,[39m [90m// VD students[39m[0m
+
+      at Logger.warn (node_modules/sequelize/src/utils/logger.ts:41:13)
+      at warn (node_modules/sequelize/src/data-types.js:40:14)
+      at removeUnsupportedIntegerOptions (node_modules/sequelize/src/dialects/sqlite/data-types.js:14:7)
+      at new BIGINT (node_modules/sequelize/src/dialects/sqlite/data-types.js:153:7)
+      at Object.construct (node_modules/sequelize/src/utils/class-to-invokable.ts:25:14)
+      at Proxy.extend (node_modules/sequelize/src/data-types.js:44:12)
+      at Sequelize.normalizeDataType (node_modules/sequelize/src/sequelize.js:1302:37)
+      at Sequelize.normalizeAttribute (node_modules/sequelize/src/sequelize.js:1324:27)
+      at node_modules/sequelize/src/model.js:1043:34
+      at node_modules/lodash/lodash.js:13500:38
+      at node_modules/lodash/lodash.js:4998:15
+      at baseForOwn (node_modules/lodash/lodash.js:3037:24)
+      at lodash.mapValues (node_modules/lodash/lodash.js:13499:7)
+      at AuditLog.init (node_modules/sequelize/src/model.js:1042:28)
+      at Sequelize.define (node_modules/sequelize/src/sequelize.js:468:11)
+      at define (src/models/auditLog.model.js:4:30)
+      at Object.<anonymous> (src/models/index.js:14:40)
+      at Object.require (src/services/auth.service.js:5:5)
+      at Object.<anonymous> (src/middlewares/authenticate.js:1:56)
+      at Object.require (src/routes/auth.routes.js:2:22)
+      at Object.require (src/routes/index.js:3:21)
+      at Object.require (app.js:20:17)
+      at Object.require (tests/helpers.js:3:13)
+      at Object.require (tests/admin.users.test.js:3:5)
+
+PASS tests/semester.test.js
+
+Test Suites: 6 passed, 6 total
+Tests:       120 passed, 120 total
+Snapshots:   0 total
+Time:        9.683 s
+Ran all test suites.

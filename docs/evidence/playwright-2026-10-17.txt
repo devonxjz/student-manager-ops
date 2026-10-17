@@ -1,0 +1,41 @@
+
+> student-manager-client@1.0.0 test:e2e
+> playwright test
+
+
+Running 32 tests using 4 workers
+
+  ok  2 [chrome] › e2e\admin.spec.js:106:1 › giáo viên: xoá (8.0s)
+  ok  4 [chrome] › e2e\admin.spec.js:6:1 › dashboard: thẻ số liệu, biểu đồ, xem dạng bảng, đổi chỉ số theo lớp (8.6s)
+  ok  3 [chrome] › e2e\admin.spec.js:76:1 › giáo viên: thêm (kèm tài khoản), sửa, xoá; tài khoản mới đăng nhập được (13.8s)
+  ok  1 [chrome] › e2e\admin.spec.js:29:1 › lớp học: validate, thêm, tìm, sửa gán GVCN, xoá (và chặn xoá lớp còn SV) (15.0s)
+  ok  6 [chrome] › e2e\admin.spec.js:148:1 › môn học: validate tín chỉ, thêm, sắp xếp, sửa, xoá (9.1s)
+  ok  5 [chrome] › e2e\admin.spec.js:114:1 › sinh viên: thêm, lọc theo lớp/tiến độ, chuyển lớp, xoá (13.6s)
+  ok  9 [chrome] › e2e\auth.spec.js:5:3 › Đăng nhập & phân quyền route › validate form rỗng và báo sai mật khẩu (4.2s)
+  ok  8 [chrome] › e2e\admin.spec.js:212:1 › khôi phục dữ liệu demo từ menu người dùng (7.4s)
+  ok 10 [chrome] › e2e\auth.spec.js:16:3 › Đăng nhập & phân quyền route › ẩn/hiện mật khẩu (1.3s)
+  ok  7 [chrome] › e2e\admin.spec.js:178:1 › phân quyền: đổi vai trò, khoá/mở, đặt lại mật khẩu, không tự sửa mình (9.4s)
+  ok 11 [chrome] › e2e\auth.spec.js:24:3 › Đăng nhập & phân quyền route › nhập tay tài khoản admin → màn chào mừng → /admin (3.7s)
+  ok 13 [chrome] › e2e\auth.spec.js:32:5 › Đăng nhập & phân quyền route › đăng nhập demo teacher vào đúng dashboard (3.6s)
+  ok 14 [chrome] › e2e\auth.spec.js:32:5 › Đăng nhập & phân quyền route › đăng nhập demo student vào đúng dashboard (3.5s)
+  ok 15 [chrome] › e2e\auth.spec.js:38:3 › Đăng nhập & phân quyền route › chưa đăng nhập vào route bảo vệ → /login, sau đăng nhập quay lại trang cũ (4.0s)
+  ok 17 [chrome] › e2e\auth.spec.js:54:3 › Đăng nhập & phân quyền route › giáo viên không vào được trang admin (4.6s)
+  ok 16 [chrome] › e2e\auth.spec.js:46:3 › Đăng nhập & phân quyền route › sai vai trò bị chuyển về trang của mình (4.9s)
+  ok 20 [chrome] › e2e\landing.spec.js:4:3 › Landing page › hero, điều hướng anchor, tab vai trò, FAQ và CTA (2.9s)
+  ok 12 [chrome] › e2e\auth.spec.js:32:5 › Đăng nhập & phân quyền route › đăng nhập demo admin vào đúng dashboard (12.5s)
+  ok 18 [chrome] › e2e\auth.spec.js:60:3 › Đăng nhập & phân quyền route › đã đăng nhập: landing hiện "Vào dashboard", /login tự chuyển hướng (5.4s)
+  ok 21 [chrome] › e2e\landing.spec.js:35:3 › Landing page › nút "Đăng nhập" trên navbar và trang 404 (1.7s)
+  ok 23 [chrome] › e2e\mobile.spec.js:15:1 › mobile: landing có menu thu gọn (1.5s)
+  ok 19 [chrome] › e2e\auth.spec.js:69:3 › Đăng nhập & phân quyền route › đăng xuất từ menu người dùng (5.5s)
+  ok 24 [chrome] › e2e\student.spec.js:6:1 › tín chỉ của tôi: vòng tiến độ, thẻ số liệu, bảng môn đạt (4.2s)
+  ok 25 [chrome] › e2e\student.spec.js:16:1 › thông tin cá nhân hiển thị MSSV, lớp, GVCN (4.4s)
+  ok 27 [chrome] › e2e\teacher.spec.js:6:1 › tổng quan: số liệu và biểu đồ lớp chủ nhiệm (5.1s)
+  ok 22 [chrome] › e2e\mobile.spec.js:6:1 › mobile: menu ngăn kéo điều hướng và tự đóng (11.6s)
+  ok 28 [chrome] › e2e\teacher.spec.js:14:1 › lớp của tôi: chỉ thấy lớp mình chủ nhiệm, mở danh sách SV (5.7s)
+  ok 26 [chrome] › e2e\student.spec.js:25:1 › đổi mật khẩu: validate, thành công, đăng nhập lại bằng mật khẩu mới (10.8s)
+  ok 29 [chrome] › e2e\teacher.spec.js:23:1 › không truy cập được lớp của giáo viên khác (403) (4.8s)
+  ok 32 [chrome] › e2e\teacher.spec.js:107:1 › đổi mật khẩu sai mật khẩu hiện tại (4.9s)
+  ok 31 [chrome] › e2e\teacher.spec.js:65:1 › nhập điểm: badge và tín chỉ cập nhật tức thì, lưu, huỷ, cảnh báo rời trang (9.2s)
+  ok 30 [chrome] › e2e\teacher.spec.js:28:1 › sinh viên trong lớp: thêm, trùng MSSV, sửa, tìm, phân trang, xoá (15.5s)
+
+  32 passed (1.1m)
