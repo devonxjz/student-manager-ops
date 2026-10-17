@@ -141,6 +141,8 @@ Các dịch vụ trên đang ở mức nghiên cứu; việc có được phép 
 | Ứng dụng | Express chạy trên EC2 do Elastic Beanstalk quản lý, phía sau ALB | Xử lý nghiệp vụ và phân quyền |
 | Dữ liệu | RDS for MySQL trong subnet dữ liệu private | Lưu trữ dữ liệu ứng dụng |
 
+![Sơ đồ hạ tầng (Claude vẽ dựa trên ý tưởng của nhóm)](infrastructure.png)
+
 ### 4.2. Luồng request dự kiến
 
 1. Trình duyệt truy cập giao diện ứng dụng.
@@ -228,15 +230,18 @@ Trong tuần 1, toàn bộ mã nguồn và tài liệu được gộp lại và 
 
 **Nhóm có sử dụng AI trong tuần 1**, gồm Gemini và Claude. AI được dùng để tham khảo kiến thức, góp ý và sinh một phần bản nháp. 
 
-| Hạng mục | Công cụ | Phần AI hỗ trợ | Phần sinh viên thực hiện |
-| --- | --- | --- | --- |
-| Nghiên cứu AWS | Gemini | Giải thích khái niệm và so sánh phương án | Đọc tài liệu, chọn phương án và kiểm tra sự phù hợp |
-| Kiến trúc và tag | Claude | Góp ý thiết kế | Quyết định phương án, vẽ sơ đồ và đặt quy ước |
-| Đặc tả và cơ sở dữ liệu | Claude | Rà soát, góp ý ràng buộc | Viết đặc tả, thiết kế bảng và quan hệ |
-| Backend, frontend | Claude | Sinh một phần bản nháp mã nguồn | Lên cấu trúc, sửa bản nháp, tự viết một phần, đọc hiểu và chạy thử |
-| Báo cáo ban đầu | Gemini | Hỗ trợ trình bày | Kiểm tra nội dung theo tiến độ thực tế |
-| Bản chỉnh sửa để nộp lại | ChatGPT, Claude | ChatGPT hỗ trợ tổ chức lại báo cáo, làm rõ dẫn chứng và khai báo AI; Claude điền link dẫn chứng, đối chiếu báo cáo với repo, chạy lại kiểm thử và ghi kết quả | Kiểm tra từng link và số liệu, quyết định nội dung, chịu trách nhiệm bản nộp |
-| Thao tác AWS | Không sử dụng trong tuần 1 | Không có | Tuần 1 chưa tạo tài nguyên AWS |
+| Hạng mục | Công cụ | Phần AI hỗ trợ                                                           | Phần sinh viên thực hiện                                                                                                       |
+| --- | --- |--------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
+| Nghiên cứu AWS | Gemini | Giải thích khái niệm và so sánh phương án                                | Đọc tài liệu, chọn phương án và kiểm tra sự phù hợp                                                                            |
+| Kiến trúc và tag | Claude | Góp ý thiết kế                                                           | Quyết định phương án, vẽ sơ đồ và đặt quy ước                                                                                  |
+| Đặc tả và cơ sở dữ liệu | Claude | Rà soát, góp ý ràng buộc                                                 | Viết đặc tả, thiết kế bảng và quan hệ                                                                                          |
+| Backend, frontend | Claude | Sinh một phần bản nháp mã nguồn                                          | Lên cấu trúc, sửa bản nháp, tự viết một phần, đọc hiểu và chạy thử                                                             |
+| Báo cáo ban đầu | Gemini | Hỗ trợ trình bày                                                         | Kiểm tra nội dung theo tiến độ thực tế                                                                                         |
+| Bản chỉnh sửa để nộp lại | Claude | Hỗ trợ tổ chức lại báo cáo, làm rõ dẫn chứng, đối chiếu báo cáo với repo | Kiểm tra từng link và số liệu, quyết định nội dung, điền link dẫn chứng, chạy kiểm thử và ghi kết quả.|
+| Thao tác AWS | Không sử dụng trong tuần 1 | Không có                                                                 | Tuần 1 chưa tạo tài nguyên AWS                                                                                                 |
+
+![Bảng và quan hệ do Claude đề xuất](ERD_AI.png)
+![Minh chứng AI hỗ trợ trong việc triển khai ý tưởng](AI_evidence.png)
 
 ### Quy ước mức hỗ trợ
 
