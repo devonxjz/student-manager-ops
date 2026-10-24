@@ -107,18 +107,19 @@ Index: `uq_classes_code`, `ix_classes_teacher` (giáo viên xem "lớp của tô
 
 ### 2.4 `students` – Hồ sơ sinh viên
 
-| Cột | Kiểu | Khoá | NN | Mặc định | Ràng buộc / Mô tả |
-|---|---|---|:-:|---|---|
-| id | INT UNSIGNED | PK, AI | ✔ | | |
-| user_id | INT UNSIGNED | FK → users.id, UQ | ✔ | | Xoá user thì xoá hồ sơ (CASCADE) |
-| student_code | VARCHAR(20) | UQ | ✔ | | MSSV, VD `24110154` |
-| full_name | VARCHAR(100) | | ✔ | | Họ tên |
-| date_of_birth | DATE | | | NULL | Ngày sinh |
+| Cột | Kiểu            | Khoá | NN | Mặc định | Ràng buộc / Mô tả |
+|---|-----------------|---|:-:|---|---|
+| id | INT UNSIGNED    | PK, AI | ✔ | | |
+| user_id | INT UNSIGNED    | FK → users.id, UQ | ✔ | | Xoá user thì xoá hồ sơ (CASCADE) |
+| student_code | VARCHAR(20)     | UQ | ✔ | | MSSV, VD `24110154` |
+| full_name | VARCHAR(100)    | | ✔ | | Họ tên |
+| date_of_birth | DATE            | | | NULL | Ngày sinh |
 | gender | ENUM('male','female','other') | | | NULL | Giới tính |
-| email | VARCHAR(100) | | | NULL | Email sinh viên |
-| phone | VARCHAR(15) | | | NULL | Số điện thoại |
-| class_id | INT UNSIGNED | FK → classes.id | ✔ | | Lớp sinh hoạt; không xoá được lớp còn sinh viên (RESTRICT) |
-| avatar_key | VARCHAR(255) | | | NULL | Key ảnh thẻ trên S3 `sms-dev-uploads`, VD `avatars/24110154.jpg`; không lưu file trong DB |
+| email | VARCHAR(100)    | | | NULL | Email sinh viên |
+| phone | VARCHAR(15)     | | | NULL | Số điện thoại |
+| class_id | INT UNSIGNED    | FK → classes.id | ✔ | | Lớp sinh hoạt; không xoá được lớp còn sinh viên (RESTRICT) |
+| avatar  | MEDIUMBLOB      | | | NULL | Ảnh thẻ lưu trực tiếp trong DB; ứng dụng giới hạn ≤ 2 MB  |
+| avatar_mime   | VARCHAR(50)     | | | NULL | Loại ảnh, VD `image/jpeg`; cần để trả header `Content-Type` | |
 | status | ENUM('studying','suspended','graduated','dropped') | | ✔ | 'studying' | Tình trạng học tập |
 
 Index: `uq_students_user`, `uq_students_code`, `ix_students_class` (danh sách SV theo lớp), `ix_students_name`.

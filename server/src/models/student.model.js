@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
     gender: { type: DataTypes.ENUM(...GENDERS) },
     email: { type: DataTypes.STRING(100) },
     phone: { type: DataTypes.STRING(15) },
-    avatarKey: { type: DataTypes.STRING(255) }, // key S3
+    avatar: { type: DataTypes.BLOB('medium') }, // ảnh thẻ, MEDIUMBLOB
+    avatarMime: { type: DataTypes.STRING(50) },
     status: { type: DataTypes.ENUM(...STUDENT_STATUSES), allowNull: false, defaultValue: 'studying' },
   }, { tableName: 'students', underscored: true });
 
