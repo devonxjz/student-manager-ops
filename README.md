@@ -104,9 +104,48 @@ Tất cả trả JSON, lỗi có dạng `{ "error": "...", "details": [...] }`.
 
 Không commit `.env`.
 
-## Triển khai AWS
+## Triển khai AWS Elastic Beanstalk
 
-Xem [`docs/SPEC.md`](docs/SPEC.md) (mục 11–12). Phần `.ebextensions`, môi trường load-balanced và minh hoạ rolling deployment / rollback **chưa làm**.
+### 1. Cấu hình tự động (`.ebextensions/` & `Procfile`)
+- **Khởi động:** `Procfile` cấu hình chạy `web: node server/server.js`.
+- **Cấu hình hạ tầng (`.ebextensions/`):**
+  - `01-env.config`: `NODE_ENV=production`, `PORT=8080`, proxy Nginx, health check path `/health`.
+  - `02-autoscaling.config`: Instance `t3.micro`, Auto Scaling min 1 / max 3, key pair `vockey`, Load-balanced, tag `Project: student-manager`, `Owner: 24110331-24110154`.
+  - `03-deployment.config`: Rolling deployment batch size 1 (zero downtime update).
+  - `04-logs.config`: CloudWatch Logs streaming và Health streaming lưu trữ 7 ngày.
+
+### 2. Đóng gói ứng dụng (Script tự động)
+Chạy script đóng gói tự động tại thư mục gốc:
+```bash
+# Tạo gói triển khai phiên bản v1 (sinh ra dist/student-manager-v1.zip)
+bash scripts/package.sh v1
+
+# Tạo phiên bản tiếp theo khi thử nghiệm rolling update (v2)
+bash scripts/package.sh v2
+```
+Script sẽ tự động:
+1. Build frontend React (`npm --prefix client run build` ra `client/dist`).
+2. Nén các thành phần cần thiết (`Procfile`, `package.json`, `.ebextensions/`, `server/`, `client/dist/`).
+3. Tự động loại trừ `node_modules/`, file `.env`, file test để gói triển khai gọn nhẹ (~500 KB).
+
+### 3. Các bước triển khai trên AWS Beanstalk Console
+1. Truy cập AWS Management Console tại region `us-east-1`.
+2. Mở dịch vụ **Elastic Beanstalk** -> **Create application**: `student-manager`.
+3. Tạo Environment:
+   - **Environment tier:** Web server environment.
+   - **Platform:** Managed platform -> Node.js (Node.js 20 on Amazon Linux 2023).
+   - **Application code:** Chọn **Upload your code** và tải lên file `dist/student-manager-v1.zip`.
+   - **Service access:** Chọn Service role `LabRole`, EC2 instance profile `LabInstanceProfile`.
+   - **Networking:** Chọn VPC và Subnet đã chuẩn bị.
+   - **Capacity:** Environment type **Load balanced** (Min 1, Max 3, `t3.micro`, Key pair `vockey`).
+   - **Environment properties:**
+     - `DB_HOST`: Endpoint của Amazon RDS MySQL.
+     - `DB_PORT`: `3306`
+     - `DB_NAME`: `student_manager`
+     - `DB_USER`: Tên tài khoản master RDS.
+     - `DB_PASSWORD`: Mật khẩu kết nối RDS.
+     - `JWT_SECRET`: Chuỗi khóa ký JWT bí mật (bắt buộc khi production).
+     - `COOKIE_SECURE`: `false` (khi chạy HTTP) hoặc `true` (nếu có HTTPS).
 
 ## Tác giả
 

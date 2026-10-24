@@ -1,0 +1,29 @@
+{
+  "name": "student-manager-ops",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "build:client": "npm --prefix client run build",
+    "build": "npm run build:client",
+    "package": "bash scripts/package.sh",
+    "test": "npm --prefix server test"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "compression": "^1.8.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "express-validator": "^7.3.2",
+    "helmet": "^7.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.12.1",
+    "mysql2": "^3.24.6",
+    "sequelize": "^6.37.8",
+    "winston": "^3.19.0"
+  }
+}
