@@ -113,10 +113,10 @@ function Hero() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="group inline-flex items-center gap-2 rounded-full border bg-white/70 py-1 pl-1 pr-3 text-xs font-medium text-slate-600 shadow-sm backdrop-blur transition hover:border-indigo-200"
+          className="group inline-flex items-center gap-2 rounded-full border bg-white/70 py-1 pl-1 pr-3 text-xs font-medium text-slate-600 shadow-sm backdrop-blur transition hover:border-emerald-200"
         >
-          <span className="rounded-full bg-indigo-600 px-2 py-0.5 text-white">Mới</span>
-          Triển khai trên AWS Elastic Beanstalk + RDS
+          <span className="rounded-full bg-emerald-600 px-2 py-0.5 text-white font-bold">v2.0</span>
+          Phiên bản v2.0 · Cập nhật Rolling Deployment không gián đoạn
           <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
         </motion.a>
 
