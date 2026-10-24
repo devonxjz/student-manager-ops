@@ -119,7 +119,7 @@ Index: `uq_classes_code`, `ix_classes_teacher` (giáo viên xem "lớp của tô
 | phone | VARCHAR(15)     | | | NULL | Số điện thoại |
 | class_id | INT UNSIGNED    | FK → classes.id | ✔ | | Lớp sinh hoạt; không xoá được lớp còn sinh viên (RESTRICT) |
 | avatar  | MEDIUMBLOB      | | | NULL | Ảnh thẻ lưu trực tiếp trong DB; ứng dụng giới hạn ≤ 2 MB  |
-| avatar_mime   | VARCHAR(50)     | | | NULL | Loại ảnh, VD `image/jpeg`; cần để trả header `Content-Type` | |
+| avatar_mime   | VARCHAR(50)     | | | NULL | Loại ảnh, VD `image/jpeg`; cần để trả header `Content-Type` |
 | status | ENUM('studying','suspended','graduated','dropped') | | ✔ | 'studying' | Tình trạng học tập |
 
 Index: `uq_students_user`, `uq_students_code`, `ix_students_class` (danh sách SV theo lớp), `ix_students_name`.

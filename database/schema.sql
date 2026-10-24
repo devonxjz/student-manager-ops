@@ -89,7 +89,7 @@ CREATE TABLE students (
   phone         VARCHAR(15)       NULL,
   class_id      INT UNSIGNED  NOT NULL,
   avatar        MEDIUMBLOB        NULL COMMENT 'Ảnh thẻ (byte), tối đa 2 MB do ứng dụng giới hạn',
-  avatar_mine   VARCHAR(50)       NULL COMMENT 'VD image/jpeg, image/png',
+  avatar_mime   VARCHAR(50)       NULL COMMENT 'VD image/jpeg, image/png',
   status        ENUM('studying','suspended','graduated','dropped') NOT NULL DEFAULT 'studying',
   created_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
