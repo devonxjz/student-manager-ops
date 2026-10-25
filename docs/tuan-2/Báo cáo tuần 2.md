@@ -20,14 +20,12 @@
 
 ## 1. Tổng kết công việc tuần 2
 
-Tuần 2, ứng dụng được triển khai thật trên AWS theo hai lượt:
+Trong tuần 2, nhóm tập trung vào việc đưa ứng dụng quản lý sinh viên lên môi trường AWS Elastic Beanstalk và kiểm tra khả năng hoạt động thực tế. Quá trình triển khai được chia thành hai lượt. Lượt 2 dùng lại gói ứng dụng và `.ebextensions` của lượt 1. Hai lượt chạy trên hai account vì Learner Lab gắn với tài khoản từng sinh viên và không cho chia sẻ quyền truy cập (không tạo được IAM user). Kiến trúc chính thức của nhóm từ tuần 2 là **lượt 2**.
 
 | Lượt | Người thực hiện | Account Learner Lab | Mạng | Kết quả |
 | --- | --- | --- | --- | --- |
 | 1 | Trần Lê Thái | `2751-7291-1137` | Default VPC | Beanstalk + RDS chạy được; thử rolling deployment v1 → v2 và rollback về v1 |
 | 2 | Nông Hoàng Anh | `4328-6392-4671` | **VPC riêng 3 tầng** | Dựng VPC, RDS MySQL 8.4 trong subnet private, triển khai lại cùng ứng dụng; Health = Ok |
-
-Lượt 2 dùng lại gói ứng dụng và `.ebextensions` của lượt 1. Hai lượt chạy trên hai account vì Learner Lab gắn với tài khoản từng sinh viên và không cho chia sẻ quyền truy cập (không tạo được IAM user). Kiến trúc chính thức của nhóm từ tuần 2 là **lượt 2**.
 
 ### 1.1. Danh sách công việc và dẫn chứng
 
@@ -48,9 +46,8 @@ Lượt 2 dùng lại gói ứng dụng và `.ebextensions` của lượt 1. Hai
 ## 2. Nội dung công việc đã thực hiện
 
 ### 2.1. Cập nhật cơ sở dữ liệu và sơ đồ kiến trúc (A1)
-
-- `database/schema.sql`, `docs/thiet-ke/Database_Design.md`, `server/src/models/student.model.js`: thay `avatar_key VARCHAR(255)` (key ảnh trên S3) bằng `avatar MEDIUMBLOB` + `avatar_mime VARCHAR(50)`.
-- Chọn `MEDIUMBLOB` (tối đa 16 MB) vì ảnh thẻ thường 100 KB – 2 MB, vượt giới hạn 64 KB của `BLOB`. `avatar_mime` lưu loại ảnh để trả header `Content-Type`.
+- Ban đầu hệ thống quản lý ảnh sinh viên bằng `avatar_key VARCHAR(255)`, thay `avatar_key VARCHAR(255)` (key ảnh trên S3) bằng `avatar MEDIUMBLOB` và `avatar_mime VARCHAR(50)`. Dùng `MEDIUMBLOB` vì 1 ảnh thẻ thường nặng 100kb-2mb, `BLOB` chỉ có 64kb nên không đủ. Do avatar lưu ảnh dưới dạng byte nhị phân, Thêm `avatar_mime` dùng để lưu lại định dạng của file đó giúp nhận diện chính xác luồng dữ liệu trả về (là JPEG, PNG,...)
+- Các file cần chỉnh sửa lại trong giai đoạn này bao gồm: `database/schema.sql`, `docs/thiet-ke/Database_Design.md`, `server/src/models/student.model.js`
 - `npm test` đạt 120/120. Commit đầu gõ nhầm tên cột `avatar_mine` trong `schema.sql`; test không phát hiện vì test tạo bảng từ model Sequelize, không chạy `schema.sql`. Đã sửa ở commit `9429b0b` và xác nhận bằng `DESCRIBE students` trên RDS thật (mục 2.4).
 - Sơ đồ kiến trúc vẽ lại theo Elastic Beanstalk (mục 4).
 
@@ -70,7 +67,7 @@ Chạy trên CloudShell, account `4328-6392-4671`, region `us-east-1`.
 | Giới hạn loại instance | `ec2 run-instances --dry-run` | `t3.micro` được phép; `t3.xlarge` bị chặn (explicit deny, policy `voclabs2`) | ✔ |
 | Nền tảng | `elasticbeanstalk list-available-solution-stacks`, `rds describe-orderable-db-instance-options` | Node.js 22, 24 trên Amazon Linux 2023; `db.t3.micro` hỗ trợ MySQL 8.4.5 – 8.4.11 | ✔ |
 
-Kết luận: quyền Learner Lab đủ cho kế hoạch tuần 2, không cần tạo IAM role. Chọn **MySQL 8.4** (5.7 bị tính phí Extended Support) và **Node.js 24** (trùng phiên bản đã chạy test tuần 1).
+Kết luận: quyền Learner Lab đủ cho kế hoạch tuần 2, không cần tạo IAM role. Chọn **MySQL 8.4** (thay đổi so với phiên bản 5.7 sử dụng trước đó bị tính phí Extended Support) và **Node.js 24** (phù hợp phiên bản đã chạy test tuần 1).
 
 ![Danh tính, LabRole và các policy gắn vào LabRole](evidence/luot-2/a2-01-identity-labrole.png)
 ![Trust policy của LabRole có elasticbeanstalk.amazonaws.com](evidence/luot-2/a2-02-trust-policy.png)
@@ -224,14 +221,19 @@ Events có cảnh báo *"used the default Node.js version for your platform vers
 | Ứng dụng | `/health`, đăng nhập | Chạy được |
 | Rolling deploy + rollback | Lượt 1: deploy v2 rồi rollback v1 | `/health` đổi theo phiên bản |
 
-Chưa kiểm thử trong tuần 2: rolling deploy và rollback trên môi trường VPC mới; Auto Scaling khi tải cao.
+Trong tuần 2, rolling deploy/rollback và Auto Scaling khi tải cao chưa được kiểm thử trên môi trường VPC mới.
 
 ## 4. Kiến trúc đã triển khai
 
 ![Kiến trúc tuần 2 (Claude vẽ theo đặc tả nhóm chốt)](architecture-tuan-2.png)
 
-- Luồng request: Người dùng → Internet Gateway → ALB (public subnet) → nginx :80 → Express :8080 trên EC2 (app subnet) → RDS :3306 (DB subnet).
-- Luồng triển khai: gói zip → Elastic Beanstalk lưu vào bucket `elasticbeanstalk-us-east-1-<AccountID>` → rolling deploy từng instance; rollback bằng cách deploy lại phiên bản cũ từ bucket.
+Luồng xử lý yêu cầu:
+
+Khi người dùng truy cập ứng dụng, yêu cầu HTTP đi qua Internet Gateway đến Application Load Balancer (ALB) được đặt trong public subnet. ALB tiếp nhận yêu cầu tại cổng 80 và chuyển tiếp đến EC2 nằm trong private subnet tầng ứng dụng. Nginx trên EC2 sẽ nhận yêu cầu tại cổng 80 và chuyển đến ứng dụng Node.js Express chạy ở cổng 8080. Khi cần truy xuất hoặc cập nhật dữ liệu sinh viên, ứng dụng kết nối đến RDS MySQL thông qua cổng 3306. RDS được đặt trong private subnet tầng cơ sở dữ liệu, không cho phép truy cập trực tiếp từ Internet. Các kết nối giữa các tầng được kiểm soát bằng Security Group.
+
+Luồng triển khai ứng dụng:
+
+Nhóm đóng gói ứng dụng thành tệp ZIP và tải lên AWS Elastic Beanstalk để triển khai. Elastic Beanstalk lưu phiên bản ứng dụng vào Amazon S3, sau đó sử dụng gói này để triển khai lên các EC2 thuộc Auto Scaling Group. Nhóm cấu hình rolling deployment để cập nhật ứng dụng theo từng đợt, hạn chế gián đoạn dịch vụ trong quá trình triển khai. Khi cần quay về phiên bản trước, nhóm thực hiện rollback bằng cách triển khai lại phiên bản cũ đã được lưu trên S3. Các thông tin về trạng thái môi trường và log ứng dụng được Elastic Beanstalk gửi đến Amazon CloudWatch để theo dõi.
 - Tệp gốc để chỉnh sửa: [`architecture-tuan-2.drawio`](architecture-tuan-2.drawio).
 
 ### 4.1. Chênh lệch so với thiết kế
@@ -296,12 +298,12 @@ Thư mục `docs/` được sắp xếp lại theo tuần trong tuần 2: `docs/
 
 **Nhóm có sử dụng AI trong tuần 2** (Claude). Mọi tài nguyên AWS do sinh viên tạo và chạy thật trên Learner Lab.
 
-| Hạng mục | Công cụ | Phần AI hỗ trợ                                              | Phần sinh viên thực hiện |
-| --- | --- |-------------------------------------------------------------| --- |
-| Kế hoạch và phân công | Claude | Đề xuất chia việc, thứ tự phụ thuộc                         | Duyệt, điều chỉnh |
-| BLOB (A1) | Claude | Giải thích BLOB/MEDIUMBLOB, chỉ ra 3 tệp cần sửa            | Tự sửa, chạy test, phát hiện và sửa lỗi gõ tên cột |
-| Sơ đồ kiến trúc | Claude | Vẽ sơ đồ theo đặc tả của nhóm| Chốt thành phần, luồng, kiểm tra theo checklist |
-| Báo cáo, sắp xếp `docs/` | Claude | Soạn bản nháp từ dữ kiện và ảnh của nhóm                    | Kiểm tra số liệu, link, chỉnh nội dung |
+| Hạng mục                     | Công cụ | Phần AI hỗ trợ                                   | Phần sinh viên thực hiện |
+|------------------------------| --- |--------------------------------------------------| --- |
+| Kế hoạch và phân công        | Claude | Đề xuất chia việc, thứ tự phụ thuộc              | Duyệt, điều chỉnh |
+| BLOB (A1)                    | Claude | Giải thích BLOB/MEDIUMBLOB, chỉ ra 3 tệp cần sửa | Tự sửa, chạy test, phát hiện và sửa lỗi gõ tên cột |
+| Sơ đồ kiến trúc              | Claude | Vẽ sơ đồ theo đặc tả của nhóm                    | Chốt thành phần, luồng, kiểm tra theo checklist |
+| Báo cáo, sắp xếp `docs/`     | Claude | Gợi ý cấu trúc báo cáo và kiểm tra chính tả      | Tự xây dựng cấu trúc, tổng hợp nội dung và hình ảnh minh chứng, trực tiếp viết báo cáo, kiểm tra số liệu, liên kết và hoàn thiện nội dung |
 
 ## 9. Công việc chưa hoàn thành
 
