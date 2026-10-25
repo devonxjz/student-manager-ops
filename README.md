@@ -11,7 +11,7 @@
 | Database | MySQL 8 (Amazon RDS) qua Sequelize |
 | Hạ tầng | AWS Elastic Beanstalk, CloudWatch Logs |
 
-Thiết kế chi tiết: [`docs/SPEC.md`](docs/SPEC.md). Schema DB: [`database/schema.sql`](database/schema.sql).
+Thiết kế chi tiết: [`docs/thiet-ke/SPEC.md`](docs/thiet-ke/SPEC.md). Schema DB: [`database/schema.sql`](database/schema.sql).
 
 ## Cấu trúc
 
@@ -19,7 +19,7 @@ Thiết kế chi tiết: [`docs/SPEC.md`](docs/SPEC.md). Schema DB: [`database/s
 client/     React app (có API giả để chạy không cần backend)
 server/     Express API, test Jest
 database/   schema.sql (MySQL 8)
-docs/       SPEC.md, báo cáo
+docs/       thiet-ke/ (SPEC, thiết kế CSDL), tuan-N/ (báo cáo từng tuần)
 ```
 
 ## Phân quyền

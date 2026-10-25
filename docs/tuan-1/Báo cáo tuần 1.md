@@ -35,10 +35,10 @@ Nhóm **chưa tạo tài nguyên trên AWS trong tuần 1**. Các nội dung VPC
 | 3 | Thiết kế cơ sở dữ liệu | Chuẩn bị thiết kế 7 bảng, quan hệ giữa các bảng, ERD và script tạo cơ sở dữ liệu | [docs/Database_Design.md](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/Database_Design.md), [database/schema.sql](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/database/schema.sql), [commit liên quan](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
 | 4 | Chuẩn bị backend | Xây dựng cấu trúc mã nguồn Express, bản nháp xử lý nghiệp vụ và kết nối MySQL; sinh viên chỉnh sửa và đọc hiểu mã | [File backend tiêu biểu](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/server/src/services/credit.service.js), [commit backend](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
 | 5 | Chuẩn bị frontend | Xây dựng cấu trúc React và bản nháp giao diện phục vụ ứng dụng quản lý sinh viên | [File frontend tiêu biểu](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/client/src/pages/admin/StudentsPage.jsx), [commit frontend](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
-| 6 | Chạy kiểm thử tại máy cá nhân | Chạy Jest và Playwright để kiểm tra ứng dụng; lần chạy lại ngày 17/10 đạt 120/120 test Jest và 32/32 test Playwright | [File kiểm thử tiêu biểu](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/server/tests/auth.test.js), [kết quả hoặc nhật ký kiểm thử](https://github.com/devonxjz/student-manager-ops/blob/main/docs/evidence/tuan-1-ket-qua-kiem-thu.md) |
+| 6 | Chạy kiểm thử tại máy cá nhân | Chạy Jest và Playwright để kiểm tra ứng dụng; lần chạy lại ngày 17/10 đạt 120/120 test Jest và 32/32 test Playwright | [File kiểm thử tiêu biểu](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/server/tests/auth.test.js), [kết quả hoặc nhật ký kiểm thử](https://github.com/devonxjz/student-manager-ops/blob/main/docs/tuan-1/evidence/tuan-1-ket-qua-kiem-thu.md) |
 | 7 | Nghiên cứu dịch vụ và thiết kế hạ tầng | Phân tích kiến trúc 3 tầng, mạng qua 2 AZ, luồng request, security group và phương án triển khai | [Báo cáo gốc BC_Tuan1_AWS.docx, mục 2–4](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/BC_Tuan1_AWS.docx), [SPEC.md mục 2](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/SPEC.md?plain=1#L32-L69), [commit liên quan](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
 | 8 | Xây dựng quy ước tag | Xác định các tag `Name`, `Project`, `Environment`, `Owner`, `ManagedBy` và quy ước đặt tên tài nguyên | [Báo cáo gốc BC_Tuan1_AWS.docx, mục 5](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/BC_Tuan1_AWS.docx) |
-| 9 | Viết báo cáo và khai báo AI | Tổng hợp công việc, phân công, thời gian, hạn chế và phần AI hỗ trợ | [Báo cáo tuần 1 trên GitHub](https://github.com/devonxjz/student-manager-ops/blob/main/docs/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md), [commit cập nhật báo cáo](https://github.com/devonxjz/student-manager-ops/commits/main/docs/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md) |
+| 9 | Viết báo cáo và khai báo AI | Tổng hợp công việc, phân công, thời gian, hạn chế và phần AI hỗ trợ | [Báo cáo tuần 1 trên GitHub](https://github.com/devonxjz/student-manager-ops/blob/main/docs/tuan-1/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md), [commit cập nhật báo cáo](https://github.com/devonxjz/student-manager-ops/commits/main/docs/tuan-1/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md) |
 
 ## 2. Nội dung công việc đã thực hiện
 
@@ -104,7 +104,7 @@ Kết quả dưới đây là lần chạy lại ngày 17/10/2026 trên đúng m
 | Kết quả Playwright | 32/32 test đạt, 0 không đạt (Chrome, chạy trên API giả) |
 | Lỗi còn tồn tại | Không có test lỗi. Giới hạn: backend chưa test trên MySQL/RDS thật, Playwright chưa nối backend thật |
 
-**Dẫn chứng:** [Jest: auth.test.js](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/server/tests/auth.test.js) · [Playwright: admin.spec.js](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/client/e2e/admin.spec.js) · [Nhật ký hoặc kết quả kiểm thử](https://github.com/devonxjz/student-manager-ops/blob/main/docs/evidence/tuan-1-ket-qua-kiem-thu.md).
+**Dẫn chứng:** [Jest: auth.test.js](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/server/tests/auth.test.js) · [Playwright: admin.spec.js](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/client/e2e/admin.spec.js) · [Nhật ký hoặc kết quả kiểm thử](https://github.com/devonxjz/student-manager-ops/blob/main/docs/tuan-1/evidence/tuan-1-ket-qua-kiem-thu.md).
 
 ## 3. Nghiên cứu dịch vụ AWS
 
@@ -220,7 +220,7 @@ Các commit cần được dẫn trực tiếp để giảng viên kiểm tra n�
 | Backend | Trần Lê Thái phụ trách chính, Nông Hoàng Anh hỗ trợ | [Xem commit](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
 | Frontend | Trần Lê Thái phụ trách chính, Nông Hoàng Anh hỗ trợ | [Xem commit](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
 | Kiến trúc và quy ước tag | Cả hai | [Xem commit](https://github.com/devonxjz/student-manager-ops/commit/23620d252666851881d7ceaabb456931086e42a4) |
-| Báo cáo và khai báo AI | Nông Hoàng Anh viết chính, Trần Lê Thái rà soát | [Xem commit](https://github.com/devonxjz/student-manager-ops/commits/main/docs/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md) |
+| Báo cáo và khai báo AI | Nông Hoàng Anh viết chính, Trần Lê Thái rà soát | [Xem commit](https://github.com/devonxjz/student-manager-ops/commits/main/docs/tuan-1/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md) |
 
 Thông tin người phụ trách trong bảng thể hiện phân công của nhóm. Tác giả, thời điểm và nội dung commit được đối chiếu trực tiếp trên GitHub.
 
@@ -284,4 +284,4 @@ Trong tuần 1, toàn bộ mã nguồn và tài liệu được gộp lại và 
 - **Đặc tả:** [docs/SPEC.md](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/SPEC.md).
 - **Thiết kế cơ sở dữ liệu:** [docs/Database_Design.md](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/docs/Database_Design.md).
 - **Script SQL:** [database/schema.sql](https://github.com/devonxjz/student-manager-ops/blob/23620d252666851881d7ceaabb456931086e42a4/database/schema.sql).
-- **Commit cập nhật báo cáo nộp lại:** [Xem thay đổi](https://github.com/devonxjz/student-manager-ops/commits/main/docs/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md).
+- **Commit cập nhật báo cáo nộp lại:** [Xem thay đổi](https://github.com/devonxjz/student-manager-ops/commits/main/docs/tuan-1/B%C3%A1o%20c%C3%A1o%20tu%E1%BA%A7n%201.md).

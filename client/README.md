@@ -1,6 +1,6 @@
 # Student Manager — Frontend (React + Vite + Tailwind + shadcn/ui)
 
-Giao diện theo `docs/SPEC.md` mục 7: landing page giới thiệu dự án, trang đăng nhập có hoạt ảnh chuyển cảnh, và 3 dashboard theo vai trò (sidebar trái, nội dung dạng bảng/biểu đồ).
+Giao diện theo `docs/thiet-ke/SPEC.md` mục 7: landing page giới thiệu dự án, trang đăng nhập có hoạt ảnh chuyển cảnh, và 3 dashboard theo vai trò (sidebar trái, nội dung dạng bảng/biểu đồ).
 
 ## Chạy
 

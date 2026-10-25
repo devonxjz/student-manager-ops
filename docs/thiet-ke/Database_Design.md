@@ -8,7 +8,7 @@
 | Engine | InnoDB (khoá ngoại, transaction, row-level lock) |
 | Múi giờ lưu trữ | UTC; ứng dụng đổi sang `Asia/Ho_Chi_Minh` khi hiển thị |
 | ORM / migration | Sequelize 6 + sequelize-cli |
-| Script tạo schema | [schema.sql](schema.sql) (đã chạy thử, kiểm tra ràng buộc và view) |
+| Script tạo schema | [schema.sql](../../database/schema.sql) (đã chạy thử, kiểm tra ràng buộc và view) |
 | Sơ đồ ERD | [erd.png](erd.png) |
 | Phiên bản | 1.0 · 14/10/2026 |
 
