@@ -2,12 +2,17 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: >
   Student Manager - Elastic Beanstalk environment trong VPC cua sms-dev-network.
   Stack: sms-dev-app. Deploy sau khi da co sms-dev-network (M1) va sms-dev-database (M2).
+  Application va phien ban code phai co truoc (tao bang CLI, xem infra/README.md),
+  vi application dung chung cho moi lan tao lai moi truong va giu lich su phien ban de rollback.
 
 Parameters:
   ApplicationName:
     Type: String
     Default: student-manager
-    Description: Ten ung dung Elastic Beanstalk
+    Description: Ten ung dung Elastic Beanstalk (da co san)
+  VersionLabel:
+    Type: String
+    Description: Phien ban code da tai len application (vd v3); doi gia tri nay de deploy phien ban khac
   EnvironmentName:
     Type: String
     Default: sms-dev-app
@@ -34,18 +39,13 @@ Parameters:
     Description: So instance toi da
 
 Resources:
-  App:
-    Type: AWS::ElasticBeanstalk::Application
-    Properties:
-      ApplicationName: !Ref ApplicationName
-      Description: Student Manager Beanstalk Application
-
   Environment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:
-      ApplicationName: !Ref App
+      ApplicationName: !Ref ApplicationName
       EnvironmentName: !Ref EnvironmentName
       SolutionStackName: !Ref SolutionStackName
+      VersionLabel: !Ref VersionLabel
       OptionSettings:
         # ---------- Mang va VPC ----------
         - Namespace: aws:ec2:vpc
@@ -74,8 +74,12 @@ Resources:
         - Namespace: aws:elasticbeanstalk:environment
           OptionName: ServiceRole
           Value: LabRole
+        # ALB dung SG cua nhom; ManagedSecurityGroup de Beanstalk khong tao them SG rieng cho ALB
         - Namespace: aws:elbv2:loadbalancer
           OptionName: SecurityGroups
+          Value: !ImportValue sms-dev-AlbSg
+        - Namespace: aws:elbv2:loadbalancer
+          OptionName: ManagedSecurityGroup
           Value: !ImportValue sms-dev-AlbSg
 
         # ---------- EC2 va Security Group ----------
@@ -114,9 +118,13 @@ Resources:
         - Namespace: aws:autoscaling:trigger
           OptionName: Unit
           Value: Percent
+        # EC2 mac dinh gui CPU 5 phut/lan, nen chu ky 5 phut moi co du lieu de scale
         - Namespace: aws:autoscaling:trigger
           OptionName: Period
-          Value: "1"
+          Value: "5"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: BreachDuration
+          Value: "5"
         - Namespace: aws:autoscaling:trigger
           OptionName: EvaluationPeriods
           Value: "1"

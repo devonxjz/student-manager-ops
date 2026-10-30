@@ -167,6 +167,10 @@ Thái **không cần đăng nhập** account của Anh: bắn tải chỉ cần 
 | `monitoring.yaml` nhận tên ASG/ALB qua tham số thay vì đọc output của `app.yaml` | CloudFormation không trả tên ASG/ALB của môi trường Beanstalk; nhờ vậy viết được trước, không chờ M3 |
 | Yêu cầu `app.yaml`: tên môi trường `sms-dev-app`, scaling trigger theo CPU | Stack giám sát tra tài nguyên theo tên môi trường; bắn tải cần scale theo CPU |
 | `database.yaml`, `monitoring.yaml`, `infra/README.md` do Claude viết theo yêu cầu của Hoàng Anh; `network.yaml` do Hoàng Anh viết theo hướng dẫn từng khối | Ghi vào mục Khai báo AI của báo cáo; Hoàng Anh phải giải thích được từng phần khi vấn đáp |
+| `app.yaml`: bỏ tài nguyên Application, thêm tham số `VersionLabel` | Application `student-manager` đã có trong account (dựng lại sẽ lỗi trùng); thiếu phiên bản thì Beanstalk chạy ứng dụng mẫu của AWS. Phiên bản tải bằng CLI, đổi `VersionLabel` để rolling deploy và rollback |
+| `app.yaml`: ALB thêm `ManagedSecurityGroup`; scaling trigger chu kỳ 5 phút | Để Beanstalk không tạo SG riêng cho ALB; EC2 gửi số liệu CPU 5 phút/lần nên chu kỳ 1 phút không kích hoạt được scale |
+| `package.json` gốc thêm `@aws-sdk/client-ssm` | Beanstalk cài gói theo `package.json` gốc; thiếu gói này thì ứng dụng không khởi động được trên AWS |
+| `infra/README.md` viết lại thành quy trình 10 bước, `RequireSsl=0` khi dựng, chỉ chuyển `1` sau khi ứng dụng kết nối SSL thành công | Tách lỗi ứng dụng khỏi lỗi SSL; bật bắt buộc SSL không cần khởi động lại RDS |
 
 ## 8. Kế hoạch viết báo cáo tuần 3
 
