@@ -1,0 +1,285 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Student Manager - mang 3 tang (public / app / db) tren 2 AZ.
+  Stack: sms-dev-network. Export theo hop dong trong infra/README.md.
+
+Parameters:
+  EnableNat:
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "true"
+    Description: "false = xoa NAT de tiet kiem chi phi khi nghi"
+
+Conditions:
+  NatEnabled: !Equals [!Ref EnableNat, "true"]
+
+Resources:
+  # ---------- Khoi 1: VPC va Internet Gateway ----------
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - { Key: Name, Value: sms-dev-vpc }
+
+  Igw:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - { Key: Name, Value: sms-dev-igw }
+
+  IgwAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref Igw
+
+
+  # ---------- Khoi 2: 6 subnet tren 2 AZ ----------
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-public-a }
+        - { Key: Tier, Value: public }
+
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.2.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-public-b }
+        - { Key: Tier, Value: public }
+
+  AppSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.11.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-app-a }
+        - { Key: Tier, Value: app }
+
+  AppSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.12.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-app-b }
+        - { Key: Tier, Value: app }
+
+  DbSubnetA:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.21.0/24
+      AvailabilityZone: !Select [ 0, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-db-a }
+        - { Key: Tier, Value: db }
+
+  DbSubnetB:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      CidrBlock: 10.0.22.0/24
+      AvailabilityZone: !Select [ 1, !GetAZs "" ]
+      Tags:
+        - { Key: Name, Value: sms-dev-db-b }
+        - { Key: Tier, Value: db }
+
+  # ---------- Khoi 3: route table ----------
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - { Key: Name, Value: sms-dev-rtb-public }
+
+  PublicDefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: IgwAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref Igw
+
+  PublicSubnetARouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetA
+      RouteTableId: !Ref PublicRouteTable
+
+  PublicSubnetBRouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTable
+
+  AppRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - { Key: Name, Value: sms-dev-rtb-app }
+
+  AppSubnetARouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref AppSubnetA
+      RouteTableId: !Ref AppRouteTable
+
+  AppSubnetBRouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref AppSubnetB
+      RouteTableId: !Ref AppRouteTable
+
+  DbRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - { Key: Name, Value: sms-dev-rtb-db }
+
+  DbSubnetARouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref DbSubnetA
+      RouteTableId: !Ref DbRouteTable
+
+  DbSubnetBRouteTable:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref DbSubnetB
+      RouteTableId: !Ref DbRouteTable
+
+  # ---------- Khoi 4: NAT (chi tao khi EnableNat=true) ----------
+  NatEip:
+    Type: AWS::EC2::EIP
+    Condition: NatEnabled
+    DependsOn: IgwAttachment
+    Properties:
+      Domain: vpc
+      Tags:
+        - { Key: Name, Value: sms-dev-nat-eip }
+
+  NatGateway:
+    Type: AWS::EC2::NatGateway
+    Condition: NatEnabled
+    Properties:
+      AllocationId: !GetAtt NatEip.AllocationId
+      SubnetId: !Ref PublicSubnetA
+      Tags:
+        - { Key: Name, Value: sms-dev-nat }
+
+  AppDefaultRoute:
+    Type: AWS::EC2::Route
+    Condition: NatEnabled
+    Properties:
+      RouteTableId: !Ref AppRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway
+
+  # ---------- Khoi 5: S3 Gateway endpoint (mien phi) ----------
+  S3Endpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref Vpc
+      ServiceName: !Sub com.amazonaws.${AWS::Region}.s3
+      VpcEndpointType: Gateway
+      RouteTableIds:
+        - !Ref AppRouteTable
+        - !Ref DbRouteTable
+  # ---------- Khoi 6: security group ----------
+  AlbSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: sms-dev-alb-sg
+      GroupDescription: ALB nhan HTTP tu Internet
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - { IpProtocol: tcp, FromPort: 80, ToPort: 80, CidrIp: 0.0.0.0/0 }
+      Tags:
+        - { Key: Name, Value: sms-dev-alb-sg }
+
+  AppSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: sms-dev-app-sg
+      GroupDescription: EC2 chi nhan HTTP tu ALB
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - { IpProtocol: tcp, FromPort: 80, ToPort: 80, SourceSecurityGroupId: !Ref AlbSg }
+      Tags:
+        - { Key: Name, Value: sms-dev-app-sg }
+
+  AdminSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: sms-dev-admin-sg
+      GroupDescription: CloudShell quan tri, khong nhan ket noi vao
+      VpcId: !Ref Vpc
+      Tags:
+        - { Key: Name, Value: sms-dev-admin-sg }
+
+  DbSg:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: sms-dev-db-sg
+      GroupDescription: RDS chi nhan MySQL tu app va admin
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - { IpProtocol: tcp, FromPort: 3306, ToPort: 3306, SourceSecurityGroupId: !Ref AppSg }
+        - { IpProtocol: tcp, FromPort: 3306, ToPort: 3306, SourceSecurityGroupId: !Ref AdminSg }
+      Tags:
+        - { Key: Name, Value: sms-dev-db-sg }
+
+
+  # ---------- Khoi 7: DB subnet group ----------
+  DbSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnet DB cua sms-dev (2 AZ)
+      SubnetIds:
+        - !Ref DbSubnetA
+        - !Ref DbSubnetB
+      Tags:
+        - { Key: Name, Value: sms-dev-dbsubnet }
+
+
+  Outputs:
+    VpcId:
+      Value: !Ref Vpc
+      Export: { Name: sms-dev-VpcId }
+    PublicSubnets:
+      Value: !Join [ ",", [ !Ref PublicSubnetA, !Ref PublicSubnetB ] ]
+      Export: { Name: sms-dev-PublicSubnets }
+    AppSubnets:
+      Value: !Join [ ",", [ !Ref AppSubnetA, !Ref AppSubnetB ] ]
+      Export: { Name: sms-dev-AppSubnets }
+    DbSubnetGroup:
+      Value: !Ref DbSubnetGroup
+      Export: { Name: sms-dev-DbSubnetGroup }
+    AlbSg:
+      Value: !Ref AlbSg
+      Export: { Name: sms-dev-AlbSg }
+    AppSg:
+      Value: !Ref AppSg
+      Export: { Name: sms-dev-AppSg }
+    DbSg:
+      Value: !Ref DbSg
+      Export: { Name: sms-dev-DbSg }
+    AdminSg:
+      Value: !Ref AdminSg
+      Export: { Name: sms-dev-AdminSg }
