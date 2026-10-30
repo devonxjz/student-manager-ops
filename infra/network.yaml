@@ -258,28 +258,28 @@ Resources:
         - { Key: Name, Value: sms-dev-dbsubnet }
 
 
-  Outputs:
-    VpcId:
-      Value: !Ref Vpc
-      Export: { Name: sms-dev-VpcId }
-    PublicSubnets:
-      Value: !Join [ ",", [ !Ref PublicSubnetA, !Ref PublicSubnetB ] ]
-      Export: { Name: sms-dev-PublicSubnets }
-    AppSubnets:
-      Value: !Join [ ",", [ !Ref AppSubnetA, !Ref AppSubnetB ] ]
-      Export: { Name: sms-dev-AppSubnets }
-    DbSubnetGroup:
-      Value: !Ref DbSubnetGroup
-      Export: { Name: sms-dev-DbSubnetGroup }
-    AlbSg:
-      Value: !Ref AlbSg
-      Export: { Name: sms-dev-AlbSg }
-    AppSg:
-      Value: !Ref AppSg
-      Export: { Name: sms-dev-AppSg }
-    DbSg:
-      Value: !Ref DbSg
-      Export: { Name: sms-dev-DbSg }
-    AdminSg:
-      Value: !Ref AdminSg
-      Export: { Name: sms-dev-AdminSg }
+Outputs:
+VpcId:
+  Value: !Ref Vpc
+  Export: { Name: sms-dev-VpcId }
+PublicSubnets:
+  Value: !Join [ ",", [ !Ref PublicSubnetA, !Ref PublicSubnetB ] ]
+  Export: { Name: sms-dev-PublicSubnets }
+AppSubnets:
+  Value: !Join [ ",", [ !Ref AppSubnetA, !Ref AppSubnetB ] ]
+  Export: { Name: sms-dev-AppSubnets }
+DbSubnetGroup:
+  Value: !Ref DbSubnetGroup
+  Export: { Name: sms-dev-DbSubnetGroup }
+AlbSg:
+  Value: !Ref AlbSg
+  Export: { Name: sms-dev-AlbSg }
+AppSg:
+  Value: !Ref AppSg
+  Export: { Name: sms-dev-AppSg }
+DbSg:
+  Value: !Ref DbSg
+  Export: { Name: sms-dev-DbSg }
+AdminSg:
+  Value: !Ref AdminSg
+  Export: { Name: sms-dev-AdminSg }
