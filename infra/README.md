@@ -71,7 +71,11 @@ aws cloudformation deploy --stack-name sms-dev-database --template-file infra/da
 
 Nạp schema và seed: tạo CloudShell VPC environment trong `sms-dev-app-a` với SG `sms-dev-AdminSg`, rồi làm như tuần 2 (host lấy từ export `sms-dev-DbEndpoint`, kết nối bằng `--ssl`).
 
-**4. Ứng dụng**: xem `app.yaml`.
+**4. Ứng dụng** (khoảng 5-10 phút)
+
+```bash
+aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yaml --tags $TAGS
+```
 
 **5. Giám sát** (sau khi `sms-dev-app` Health Ok)
 

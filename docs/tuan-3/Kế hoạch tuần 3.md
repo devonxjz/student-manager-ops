@@ -150,7 +150,11 @@ Thái **không cần đăng nhập** account của Anh: bắn tải chỉ cần 
 | A5 | Đã viết `infra/monitoring.yaml`; **chưa dựng** (cần môi trường `sms-dev-app`) | |
 | — | Đã viết `infra/README.md`: hợp đồng, lệnh dựng, tắt NAT, xóa stack | |
 | A4, A6 | Chưa bắt đầu | |
-| T1–T7 | Chưa nhận cập nhật từ Thái | |
+| T1 | ✔ Xong | Bật SSL RDS (`dialectOptions.ssl`), tải bí mật SSM bằng `@aws-sdk/client-ssm`, 126/126 unit test pass |
+| T2 | ✔ Xong | `npm audit fix` nâng `body-parser` lên 1.20.9, vá hết 2 lỗ hổng High |
+| T3 | ✔ Xong | Đóng SSH (`SSHSourceRestriction`), đổi tag `Project=StudentMgmt` trong `.ebextensions` |
+| T4 | ✔ Xong | Đã viết `infra/app.yaml` (CloudFormation cho Beanstalk `sms-dev-app`) |
+| T5–T7 | Chờ môi trường AWS | Sẵn sàng thử nghiệm trên account cá nhân và buổi tích hợp |
 
 ### 7.2. Thay đổi
 

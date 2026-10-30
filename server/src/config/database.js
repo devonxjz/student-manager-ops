@@ -1,6 +1,11 @@
 // Dùng chung cho app (models/index.js). Test chạy SQLite in-memory để không cần MySQL.
 require('dotenv').config();
 
+const dialectOptions = {};
+if (process.env.DB_SSL === 'true') {
+  dialectOptions.ssl = 'Amazon RDS';
+}
+
 const common = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -11,6 +16,7 @@ const common = {
   logging: false,
   timezone: '+00:00', // schema.sql lưu UTC
   pool: { max: 5, min: 0, idle: 10000 },
+  ...(Object.keys(dialectOptions).length > 0 && { dialectOptions }),
 };
 
 module.exports = {

@@ -1,0 +1,237 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Student Manager - Elastic Beanstalk environment trong VPC cua sms-dev-network.
+  Stack: sms-dev-app. Deploy sau khi da co sms-dev-network (M1) va sms-dev-database (M2).
+
+Parameters:
+  ApplicationName:
+    Type: String
+    Default: student-manager
+    Description: Ten ung dung Elastic Beanstalk
+  EnvironmentName:
+    Type: String
+    Default: sms-dev-app
+    Description: Ten moi truong Elastic Beanstalk (bat buoc la sms-dev-app theo hop dong)
+  SolutionStackName:
+    Type: String
+    Default: "64bit Amazon Linux 2023 v6.11.12 running Node.js 24"
+    Description: Nen tang Elastic Beanstalk
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    Description: Loai EC2 instance
+  KeyName:
+    Type: String
+    Default: vockey
+    Description: EC2 Key Pair (Learner Lab dung vockey)
+  MinSize:
+    Type: String
+    Default: "1"
+    Description: So instance toi thieu
+  MaxSize:
+    Type: String
+    Default: "3"
+    Description: So instance toi da
+
+Resources:
+  App:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      ApplicationName: !Ref ApplicationName
+      Description: Student Manager Beanstalk Application
+
+  Environment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      ApplicationName: !Ref App
+      EnvironmentName: !Ref EnvironmentName
+      SolutionStackName: !Ref SolutionStackName
+      OptionSettings:
+        # ---------- Mang va VPC ----------
+        - Namespace: aws:ec2:vpc
+          OptionName: VPCId
+          Value: !ImportValue sms-dev-VpcId
+        - Namespace: aws:ec2:vpc
+          OptionName: Subnets
+          Value: !ImportValue sms-dev-AppSubnets
+        - Namespace: aws:ec2:vpc
+          OptionName: ELBSubnets
+          Value: !ImportValue sms-dev-PublicSubnets
+        - Namespace: aws:ec2:vpc
+          OptionName: AssociatePublicIpAddress
+          Value: "false"
+        - Namespace: aws:ec2:vpc
+          OptionName: ELBScheme
+          Value: "public"
+
+        # ---------- Load Balancer (ALB) ----------
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: EnvironmentType
+          Value: LoadBalanced
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: LoadBalancerType
+          Value: application
+        - Namespace: aws:elasticbeanstalk:environment
+          OptionName: ServiceRole
+          Value: LabRole
+        - Namespace: aws:elbv2:loadbalancer
+          OptionName: SecurityGroups
+          Value: !ImportValue sms-dev-AlbSg
+
+        # ---------- EC2 va Security Group ----------
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: InstanceType
+          Value: !Ref InstanceType
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: EC2KeyName
+          Value: !Ref KeyName
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value: LabInstanceProfile
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: SecurityGroups
+          Value: !ImportValue sms-dev-AppSg
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: SSHSourceRestriction
+          Value: "tcp,22,22,127.0.0.1/32"
+
+        # ---------- Auto Scaling va Scaling Trigger ----------
+        - Namespace: aws:autoscaling:asg
+          OptionName: MinSize
+          Value: !Ref MinSize
+        - Namespace: aws:autoscaling:asg
+          OptionName: MaxSize
+          Value: !Ref MaxSize
+        - Namespace: aws:autoscaling:asg
+          OptionName: Cooldown
+          Value: "120"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: MeasureName
+          Value: CPUUtilization
+        - Namespace: aws:autoscaling:trigger
+          OptionName: Statistic
+          Value: Average
+        - Namespace: aws:autoscaling:trigger
+          OptionName: Unit
+          Value: Percent
+        - Namespace: aws:autoscaling:trigger
+          OptionName: Period
+          Value: "1"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: EvaluationPeriods
+          Value: "1"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: UpperThreshold
+          Value: "70"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: UpperBreachScaleIncrement
+          Value: "1"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: LowerThreshold
+          Value: "20"
+        - Namespace: aws:autoscaling:trigger
+          OptionName: LowerBreachScaleIncrement
+          Value: "-1"
+
+        # ---------- Proxy va Process (Healthcheck) ----------
+        - Namespace: aws:elasticbeanstalk:environment:proxy
+          OptionName: ProxyServer
+          Value: nginx
+        - Namespace: aws:elasticbeanstalk:environment:process:default
+          OptionName: Port
+          Value: "80"
+        - Namespace: aws:elasticbeanstalk:environment:process:default
+          OptionName: Protocol
+          Value: HTTP
+        - Namespace: aws:elasticbeanstalk:environment:process:default
+          OptionName: HealthCheckPath
+          Value: /health
+        - Namespace: aws:elasticbeanstalk:environment:process:default
+          OptionName: MatcherHTTPCode
+          Value: "200"
+
+        # ---------- Chien luoc Rolling Deployment ----------
+        - Namespace: aws:elasticbeanstalk:command
+          OptionName: DeploymentPolicy
+          Value: Rolling
+        - Namespace: aws:elasticbeanstalk:command
+          OptionName: BatchSizeType
+          Value: Fixed
+        - Namespace: aws:elasticbeanstalk:command
+          OptionName: BatchSize
+          Value: "1"
+        - Namespace: aws:elasticbeanstalk:command
+          OptionName: Timeout
+          Value: "600"
+        - Namespace: aws:autoscaling:updatepolicy:rollingupdate
+          OptionName: RollingUpdateEnabled
+          Value: "true"
+        - Namespace: aws:autoscaling:updatepolicy:rollingupdate
+          OptionName: RollingUpdateType
+          Value: Health
+        - Namespace: aws:autoscaling:updatepolicy:rollingupdate
+          OptionName: MaxBatchSize
+          Value: "1"
+        - Namespace: aws:autoscaling:updatepolicy:rollingupdate
+          OptionName: MinInstancesInService
+          Value: "1"
+
+        # ---------- CloudWatch Logs ----------
+        - Namespace: aws:elasticbeanstalk:cloudwatch:logs
+          OptionName: StreamLogs
+          Value: "true"
+        - Namespace: aws:elasticbeanstalk:cloudwatch:logs
+          OptionName: DeleteOnTerminate
+          Value: "false"
+        - Namespace: aws:elasticbeanstalk:cloudwatch:logs
+          OptionName: RetentionInDays
+          Value: "7"
+        - Namespace: aws:elasticbeanstalk:cloudwatch:logs:health
+          OptionName: HealthStreamingEnabled
+          Value: "true"
+
+        # ---------- Bien moi truong ung dung ----------
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: NODE_ENV
+          Value: production
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: PORT
+          Value: "8080"
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: LOG_LEVEL
+          Value: info
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_HOST
+          Value: !ImportValue sms-dev-DbEndpoint
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_PORT
+          Value: !ImportValue sms-dev-DbPort
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_NAME
+          Value: student_manager
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_USER
+          Value: admin
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_SSL
+          Value: "true"
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: DB_PASSWORD_PARAM
+          Value: /sms/dev/db-password
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: JWT_SECRET_PARAM
+          Value: /sms/dev/jwt-secret
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: COOKIE_SECURE
+          Value: "false"
+
+Outputs:
+  EnvironmentId:
+    Value: !Ref Environment
+    Description: ID moi truong Elastic Beanstalk
+  EnvironmentName:
+    Value: !Ref EnvironmentName
+    Description: Ten moi truong Elastic Beanstalk
+  ApplicationUrl:
+    Value: !Sub http://${Environment.EndpointURL}
+    Description: URL ung dung qua ALB
