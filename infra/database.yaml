@@ -1,0 +1,71 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Student Manager - RDS MySQL 8.4 trong subnet DB cua sms-dev-network.
+  Stack: sms-dev-database. Truoc khi deploy phai tao tham so SecureString
+  /sms/dev/db-password (xem infra/README.md).
+
+Parameters:
+  EngineVersion:
+    Type: String
+    Default: "8.4.11"
+    Description: Phien ban MySQL (tranh 5.7 vi bi tinh phi Extended Support)
+  RequireSsl:
+    Type: String
+    AllowedValues: ["0", "1"]
+    Default: "1"
+    Description: >
+      1 = RDS tu choi ket noi khong ma hoa. Chi dat 1 khi ung dung da bat DB_SSL.
+
+Resources:
+  # Nhom tham so rieng: nhom mac dinh khong sua duoc
+  DbParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Description: sms-dev MySQL 8.4 - bat buoc SSL
+      Family: mysql8.4
+      Parameters:
+        require_secure_transport: !Ref RequireSsl
+      Tags:
+        - { Key: Name, Value: sms-dev-mysql84 }
+
+  # Du lieu chi la du lieu thu, nap lai bang schema.sql + seed duoc,
+  # nen xoa stack thi xoa luon DB (khong de lai snapshot ton phi).
+  Db:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      DBInstanceIdentifier: sms-dev-mysql
+      Engine: mysql
+      EngineVersion: !Ref EngineVersion
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: "20"
+      StorageType: gp3
+      StorageEncrypted: true
+      MultiAZ: false
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      DBSubnetGroupName: !ImportValue sms-dev-DbSubnetGroup
+      VPCSecurityGroups:
+        - !ImportValue sms-dev-DbSg
+      PubliclyAccessible: false
+      MasterUsername: admin
+      MasterUserPassword: "{{resolve:ssm-secure:/sms/dev/db-password}}"
+      DBParameterGroupName: !Ref DbParameterGroup
+      BackupRetentionPeriod: 1
+      CopyTagsToSnapshot: true
+      AutoMinorVersionUpgrade: true
+      DeletionProtection: false
+      MonitoringInterval: 0
+      Tags:
+        - { Key: Name, Value: sms-dev-mysql }
+
+Outputs:
+  DbEndpoint:
+    Value: !GetAtt Db.Endpoint.Address
+    Export: { Name: sms-dev-DbEndpoint }
+  DbPort:
+    Value: !GetAtt Db.Endpoint.Port
+    Export: { Name: sms-dev-DbPort }
+  DbInstanceId:
+    Value: !Ref Db
+    Export: { Name: sms-dev-DbInstanceId }

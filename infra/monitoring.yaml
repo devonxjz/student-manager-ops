@@ -1,0 +1,156 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Student Manager - canh bao CloudWatch, SNS email va dashboard.
+  Stack: sms-dev-monitoring. Deploy sau khi moi truong Beanstalk sms-dev-app
+  da chay; ten ASG va ALB lay bang lenh trong infra/README.md.
+
+Parameters:
+  AlertEmail:
+    Type: String
+    Description: Email nhan canh bao (phai bam Confirm trong thu xac nhan)
+  AsgName:
+    Type: String
+    Description: Ten Auto Scaling group do Beanstalk tao
+  AlbFullName:
+    Type: String
+    Description: Phan cuoi ARN cua ALB, dang app/awseb-.../xxxx
+  EnvironmentName:
+    Type: String
+    Default: sms-dev-app
+
+Resources:
+  # ---------- SNS: kenh gui canh bao ----------
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: sms-dev-alerts
+      Subscription:
+        - { Protocol: email, Endpoint: !Ref AlertEmail }
+
+  # ---------- Alarm tang ung dung ----------
+  AppCpuHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: sms-dev-app-cpu-high
+      AlarmDescription: CPU trung binh cua cac EC2 Beanstalk > 70% trong 5 phut
+      Namespace: AWS/EC2
+      MetricName: CPUUtilization
+      Dimensions:
+        - { Name: AutoScalingGroupName, Value: !Ref AsgName }
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 70
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: missing
+      AlarmActions: [!Ref AlertTopic]
+      OKActions: [!Ref AlertTopic]
+
+  AlbTarget5xx:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: sms-dev-app-5xx
+      AlarmDescription: Ung dung tra loi 5xx >= 5 lan trong 1 phut
+      Namespace: AWS/ApplicationELB
+      MetricName: HTTPCode_Target_5XX_Count
+      Dimensions:
+        - { Name: LoadBalancer, Value: !Ref AlbFullName }
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlertTopic]
+
+  AlbElb5xx:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: sms-dev-alb-5xx
+      AlarmDescription: ALB tra 5xx (khong co instance khoe) >= 5 lan trong 1 phut
+      Namespace: AWS/ApplicationELB
+      MetricName: HTTPCode_ELB_5XX_Count
+      Dimensions:
+        - { Name: LoadBalancer, Value: !Ref AlbFullName }
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlertTopic]
+
+  # ---------- Alarm tang du lieu ----------
+  DbCpuHigh:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: sms-dev-db-cpu-high
+      AlarmDescription: CPU RDS > 80% trong 5 phut
+      Namespace: AWS/RDS
+      MetricName: CPUUtilization
+      Dimensions:
+        - { Name: DBInstanceIdentifier, Value: !ImportValue sms-dev-DbInstanceId }
+      Statistic: Average
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 80
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: missing
+      AlarmActions: [!Ref AlertTopic]
+
+  DbStorageLow:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: sms-dev-db-storage-low
+      AlarmDescription: Dung luong trong cua RDS < 2 GiB
+      Namespace: AWS/RDS
+      MetricName: FreeStorageSpace
+      Dimensions:
+        - { Name: DBInstanceIdentifier, Value: !ImportValue sms-dev-DbInstanceId }
+      Statistic: Minimum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 2147483648
+      ComparisonOperator: LessThanThreshold
+      TreatMissingData: missing
+      AlarmActions: [!Ref AlertTopic]
+
+  # ---------- Dashboard ----------
+  Dashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: sms-dev
+      DashboardBody: !Sub
+        - |
+          {
+            "widgets": [
+              { "type": "metric", "x": 0, "y": 0, "width": 12, "height": 6,
+                "properties": { "title": "${EnvironmentName} - CPU EC2 (%)", "region": "${AWS::Region}", "stat": "Average", "period": 300,
+                  "metrics": [ [ "AWS/EC2", "CPUUtilization", "AutoScalingGroupName", "${AsgName}" ] ] } },
+              { "type": "metric", "x": 12, "y": 0, "width": 12, "height": 6,
+                "properties": { "title": "So instance dang chay", "region": "${AWS::Region}", "stat": "Average", "period": 60,
+                  "metrics": [ [ "AWS/AutoScaling", "GroupInServiceInstances", "AutoScalingGroupName", "${AsgName}" ] ] } },
+              { "type": "metric", "x": 0, "y": 6, "width": 12, "height": 6,
+                "properties": { "title": "ALB - request va loi 5xx", "region": "${AWS::Region}", "stat": "Sum", "period": 60,
+                  "metrics": [ [ "AWS/ApplicationELB", "RequestCount", "LoadBalancer", "${AlbFullName}" ],
+                               [ ".", "HTTPCode_Target_5XX_Count", ".", "." ],
+                               [ ".", "HTTPCode_ELB_5XX_Count", ".", "." ] ] } },
+              { "type": "metric", "x": 12, "y": 6, "width": 12, "height": 6,
+                "properties": { "title": "ALB - thoi gian phan hoi (s)", "region": "${AWS::Region}", "stat": "Average", "period": 60,
+                  "metrics": [ [ "AWS/ApplicationELB", "TargetResponseTime", "LoadBalancer", "${AlbFullName}" ] ] } },
+              { "type": "metric", "x": 0, "y": 12, "width": 12, "height": 6,
+                "properties": { "title": "RDS - CPU (%) va ket noi", "region": "${AWS::Region}", "stat": "Average", "period": 300,
+                  "metrics": [ [ "AWS/RDS", "CPUUtilization", "DBInstanceIdentifier", "${DbId}" ],
+                               [ ".", "DatabaseConnections", ".", ".", { "yAxis": "right" } ] ] } },
+              { "type": "metric", "x": 12, "y": 12, "width": 12, "height": 6,
+                "properties": { "title": "RDS - dung luong trong (byte)", "region": "${AWS::Region}", "stat": "Minimum", "period": 300,
+                  "metrics": [ [ "AWS/RDS", "FreeStorageSpace", "DBInstanceIdentifier", "${DbId}" ] ] } }
+            ]
+          }
+        - DbId: !ImportValue sms-dev-DbInstanceId
+
+Outputs:
+  AlertTopicArn:
+    Value: !Ref AlertTopic
+  DashboardUrl:
+    Value: !Sub https://${AWS::Region}.console.aws.amazon.com/cloudwatch/home?region=${AWS::Region}#dashboards:name=sms-dev
