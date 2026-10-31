@@ -8,7 +8,7 @@
 | Sinh viên 1 | Trần Lê Thái – 24110331 (Ứng dụng, Beanstalk, bảo mật ứng dụng) |
 | Sinh viên 2 | Nông Hoàng Anh – 24110154 (Hạ tầng IaC, dữ liệu, giám sát) |
 | Mục tiêu tuần theo GVHD | Tích hợp, bảo mật, giám sát (CloudWatch), tự động hóa/IaC |
-| Account chính | Learner Lab của Nông Hoàng Anh (`4328-6392-4671`), nơi đã có VPC lượt 2 |
+| Account | Dựng song song trên 2 account Learner Lab: Trần Lê Thái (`2751-7291-1137`) và Nông Hoàng Anh (`4328-6392-4671`). Báo cáo dùng account Nông Hoàng Anh |
 
 ## 1. Điểm xuất phát
 
@@ -144,17 +144,12 @@ Thái **không cần đăng nhập** account của Anh: bắn tải chỉ cần 
 
 | Mã | Trạng thái | Ghi chú |
 | --- | --- | --- |
-| A1 | ✔ Xong | 4/6 đạt; Beanstalk không có `environmentsecrets`, không đọc được policy LabRole ([A1](A1-kiem-tra-quyen.md)) |
-| A2 | Đã viết `infra/network.yaml`, qua kiểm tra cú pháp; **chưa dựng** | Lần đầu lỗi thụt lề khối `Outputs` (2 lần), đã sửa |
-| A3 | Đã viết `infra/database.yaml`; **chưa tạo tham số SSM, chưa dựng** | |
-| A5 | Đã viết `infra/monitoring.yaml`; **chưa dựng** (cần môi trường `sms-dev-app`) | |
-| — | Đã viết `infra/README.md`: hợp đồng, lệnh dựng, tắt NAT, xóa stack | |
-| A4, A6 | Chưa bắt đầu | |
-| T1 | ✔ Xong | Bật SSL RDS (`dialectOptions.ssl`), tải bí mật SSM bằng `@aws-sdk/client-ssm`, 126/126 unit test pass |
-| T2 | ✔ Xong | `npm audit fix` nâng `body-parser` lên 1.20.9, vá hết 2 lỗ hổng High |
-| T3 | ✔ Xong | Đóng SSH (`SSHSourceRestriction`), đổi tag `Project=StudentMgmt` trong `.ebextensions` |
-| T4 | ✔ Xong | Đã viết `infra/app.yaml` (CloudFormation cho Beanstalk `sms-dev-app`) |
-| T5–T7 | Chờ môi trường AWS | Sẵn sàng thử nghiệm trên account cá nhân và buổi tích hợp |
+| A1 | ✔ Xong | 4/6 đạt; hai mục còn lại có phương án thay thế ([A1](A1-kiem-tra-quyen.md)) |
+| A2, A3, A4 | ✔ Xong | Mạng, database, dữ liệu; xóa hạ tầng tuần 2 |
+| A5 | ✔ Xong | Stack giám sát chạy, SNS đã gửi email xác nhận |
+| T1–T5 | ✔ Xong | 126/126 test; 4 stack chạy, Health `Green`; log xác nhận đọc được Parameter Store |
+| T6 | Một phần | Xong rolling và rollback; còn bắn tải (`scripts/load-test.sh`) |
+| A6, T7 | ✔ Xong | Báo cáo tuần 3 |
 
 ### 7.2. Thay đổi
 
@@ -170,6 +165,8 @@ Thái **không cần đăng nhập** account của Anh: bắn tải chỉ cần 
 | `app.yaml`: bỏ tài nguyên Application, thêm tham số `VersionLabel` | Application `student-manager` đã có trong account (dựng lại sẽ lỗi trùng); thiếu phiên bản thì Beanstalk chạy ứng dụng mẫu của AWS. Phiên bản tải bằng CLI, đổi `VersionLabel` để rolling deploy và rollback |
 | `app.yaml`: ALB thêm `ManagedSecurityGroup`; scaling trigger chu kỳ 5 phút | Để Beanstalk không tạo SG riêng cho ALB; EC2 gửi số liệu CPU 5 phút/lần nên chu kỳ 1 phút không kích hoạt được scale |
 | `package.json` gốc thêm `@aws-sdk/client-ssm` | Beanstalk cài gói theo `package.json` gốc; thiếu gói này thì ứng dụng không khởi động được trên AWS |
+| Chạy song song trên 2 account; báo cáo dùng 1 account (Nông Hoàng Anh) | Account của Hoàng Anh có đủ 4 stack và phần lớn minh chứng; chạy ở cả 2 account chứng minh template dựng được ở account bất kỳ |
+| `app.yaml`: nền tảng đổi sang `v6.12.0` | AWS đã bỏ `v6.11.12` khỏi danh sách nền tảng Node.js 24 |
 | `infra/README.md` viết lại thành quy trình 10 bước, `RequireSsl=0` khi dựng, chỉ chuyển `1` sau khi ứng dụng kết nối SSL thành công | Tách lỗi ứng dụng khỏi lỗi SSL; bật bắt buộc SSL không cần khởi động lại RDS |
 
 ## 8. Kế hoạch viết báo cáo tuần 3

@@ -256,6 +256,20 @@ Alarm và scaling xét CPU trung bình 5 phút, nên chờ ít nhất 10 phút m
 
 ---
 
+## Kiểm tra tag thực tế
+
+Tag Editor bị SCP của Learner Lab chặn. Tagging API đọc tag của các tài nguyên đang tồn tại:
+
+```bash
+aws resourcegroupstaggingapi get-resources --region us-east-1 --tag-filters Key=Project,Values=StudentMgmt --query "ResourceTagMappingList[].ResourceARN" --output text --no-cli-pager | tr '\t' '\n' | awk -F: '{print $3 ":" $6}' | cut -d/ -f1 | sort | uniq -c
+```
+
+Nếu lệnh bị chặn, kiểm tra từng dịch vụ:
+
+```bash
+aws ec2 describe-vpcs --filters Name=tag:Project,Values=StudentMgmt --query "Vpcs[].Tags" --output table --no-cli-pager; aws rds list-tags-for-resource --resource-name $(aws rds describe-db-instances --db-instance-identifier sms-dev-mysql --query "DBInstances[0].DBInstanceArn" --output text) --output table --no-cli-pager
+```
+
 ## Thử ở account khác (T5)
 
 Làm đúng bước 0 → 6 trong account đó; bước 5 tự tạo application `student-manager` nếu chưa có. Thử xong xóa cả 3 stack (mục dưới) để không tốn phí.
