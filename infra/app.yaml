@@ -118,7 +118,8 @@ Resources:
         - Namespace: aws:autoscaling:trigger
           OptionName: Unit
           Value: Percent
-        # EC2 mac dinh gui CPU 5 phut/lan, nen chu ky 5 phut moi co du lieu de scale
+        # EC2 mac dinh gui CPU 5 phut/lan, nen chu ky 5 phut moi co du lieu de scale.
+        # Node.js chay 1 luong tren t3.micro 2 vCPU nen CPU toi da khoang 50%; nguong phai duoi muc nay.
         - Namespace: aws:autoscaling:trigger
           OptionName: Period
           Value: "5"
@@ -130,7 +131,7 @@ Resources:
           Value: "1"
         - Namespace: aws:autoscaling:trigger
           OptionName: UpperThreshold
-          Value: "70"
+          Value: "40"
         - Namespace: aws:autoscaling:trigger
           OptionName: UpperBreachScaleIncrement
           Value: "1"

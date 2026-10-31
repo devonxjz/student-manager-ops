@@ -20,6 +20,9 @@ status() {
   echo "$(date -u '+%H:%M:%S') | instance: $COUNT | alarm CPU: $ALARM"
 }
 
+# Dashboard cần group metrics của ASG để vẽ số instance (mặc định AWS không bật)
+aws autoscaling enable-metrics-collection --auto-scaling-group-name "$ASG" --granularity 1Minute
+
 echo "URL=$URL"
 echo "Ban tai $DURATION giay, $CONNECTIONS ket noi"
 status

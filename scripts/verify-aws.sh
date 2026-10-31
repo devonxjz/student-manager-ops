@@ -39,7 +39,7 @@ section "EC2 cua moi truong (Public IP phai la None)"
 aws ec2 describe-instances --filters "Name=tag:elasticbeanstalk:environment-name,Values=$ENV_NAME" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].[InstanceId,InstanceType,PrivateIpAddress,PublicIpAddress]" --output table
 
 section "Ung dung doc bi mat tu Parameter Store"
-aws logs filter-log-events --log-group-name "/aws/elasticbeanstalk/$ENV_NAME/var/log/web.stdout.log" --filter-pattern '"Parameter Store"' --query "events[-1].message" --output text
+aws logs filter-log-events --log-group-name "/aws/elasticbeanstalk/$ENV_NAME/var/log/web.stdout.log" --filter-pattern '"Parameter Store"' --query "events[].message" --output text | grep -v '^None$' | tail -n 1
 
 section "Alarm"
 aws cloudwatch describe-alarms --alarm-name-prefix sms-dev --query "MetricAlarms[].[AlarmName,StateValue]" --output table
