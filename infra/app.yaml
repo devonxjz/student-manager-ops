@@ -19,7 +19,7 @@ Parameters:
     Description: Ten moi truong Elastic Beanstalk (bat buoc la sms-dev-app theo hop dong)
   SolutionStackName:
     Type: String
-    Default: "64bit Amazon Linux 2023 v6.11.12 running Node.js 24"
+    Default: "64bit Amazon Linux 2023 v6.12.0 running Node.js 24"
     Description: Nen tang Elastic Beanstalk
   InstanceType:
     Type: String
