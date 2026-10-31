@@ -238,6 +238,22 @@ Beanstalk cập nhật từng instance (Rolling, batch 1). Rollback = deploy l�
 aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yaml --parameter-overrides VersionLabel=v3 --tags $TAGS
 ```
 
+### Bước 10. Kiểm tra toàn hệ thống và bắn tải
+
+In trạng thái toàn hệ thống để chụp minh chứng (chỉ đọc):
+
+```bash
+bash scripts/verify-aws.sh
+```
+
+Bắn tải vào API đăng nhập (mặc định 15 phút, 30 kết nối), in số instance và trạng thái alarm mỗi phút:
+
+```bash
+bash scripts/load-test.sh
+```
+
+Alarm và scaling xét CPU trung bình 5 phút, nên chờ ít nhất 10 phút mới thấy thay đổi. Bấm **Confirm subscription** trước khi chạy để nhận email cảnh báo.
+
 ---
 
 ## Thử ở account khác (T5)
