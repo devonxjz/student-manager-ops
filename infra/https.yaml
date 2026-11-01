@@ -1,0 +1,24 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: >
+  Student Manager - API Gateway HTTP API truoc ALB de co HTTPS bang domain
+  *.execute-api.amazonaws.com (Learner Lab chan CloudFront). Stack: sms-dev-https.
+  Deploy sau sms-dev-app. Doan API Gateway -> ALB van la HTTP.
+
+Parameters:
+  AlbUrl:
+    Type: String
+    Description: URL cua ALB, dang http://...elb.amazonaws.com (output ApplicationUrl)
+
+Resources:
+  # Quick create: Target tu tao integration, route $default va stage tu dong deploy
+  Api:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: sms-dev-https
+      ProtocolType: HTTP
+      Target: !Ref AlbUrl
+
+Outputs:
+  HttpsUrl:
+    Value: !GetAtt Api.ApiEndpoint
+    Description: Dia chi HTTPS cua ung dung

@@ -8,7 +8,7 @@ Năm stack, dựng theo thứ tự. Stack sau đọc giá trị của stack trư
 | 2 | `database.yaml` | `sms-dev-database` | Nông Hoàng Anh | RDS MySQL 8.4 `db.t3.micro`, parameter group bắt buộc SSL (tham số `RequireSsl`) |
 | 3 | `app.yaml` | `sms-dev-app` | Trần Lê Thái | Môi trường Elastic Beanstalk `sms-dev-app`, chạy phiên bản code `VersionLabel` |
 | 4 | `monitoring.yaml` | `sms-dev-monitoring` | Nông Hoàng Anh | SNS email, 5 alarm, dashboard `sms-dev` |
-| 5 | `cdn.yaml` | `sms-dev-cdn` | Nông Hoàng Anh | CloudFront trước ALB, cung cấp HTTPS |
+| 5 | `https.yaml` | `sms-dev-https` | Nông Hoàng Anh | API Gateway trước ALB, cung cấp HTTPS |
 
 ## Quy định
 
@@ -255,21 +255,21 @@ bash scripts/load-test.sh
 
 Alarm và scaling xét CPU trung bình 5 phút, nên chờ ít nhất 10 phút mới thấy thay đổi. Bấm **Confirm subscription** trước khi chạy để nhận email cảnh báo.
 
-### Bước 11. HTTPS qua CloudFront
+### Bước 11. HTTPS qua API Gateway
 
-Cần `sms-dev-app` đang chạy (tab `us-east-1`). Dựng CloudFront, khoảng 5–15 phút:
+Learner Lab chặn CloudFront (`cloudfront:CreateDistribution`), nên nhóm dùng API Gateway HTTP API: có sẵn địa chỉ `*.execute-api.us-east-1.amazonaws.com` với chứng chỉ hợp lệ, không cần domain.
+
+Cần `sms-dev-app` đang chạy (tab `us-east-1`):
 
 ```bash
-URL=$(aws cloudformation describe-stacks --stack-name sms-dev-app --query "Stacks[0].Outputs[?OutputKey=='ApplicationUrl'].OutputValue" --output text); ALB=${URL#http://}; echo "ALB=$ALB"; aws cloudformation deploy --stack-name sms-dev-cdn --template-file infra/cdn.yaml --parameter-overrides AlbDnsName=$ALB --tags $TAGS
+URL=$(aws cloudformation describe-stacks --stack-name sms-dev-app --query "Stacks[0].Outputs[?OutputKey=='ApplicationUrl'].OutputValue" --output text); echo "URL=$URL"; aws cloudformation deploy --stack-name sms-dev-https --template-file infra/https.yaml --parameter-overrides AlbUrl=$URL --tags $TAGS
 ```
 
 Lấy địa chỉ HTTPS và kiểm tra:
 
 ```bash
-HTTPS_URL=$(aws cloudformation describe-stacks --stack-name sms-dev-cdn --query "Stacks[0].Outputs[?OutputKey=='HttpsUrl'].OutputValue" --output text); echo $HTTPS_URL; curl -s $HTTPS_URL/health; echo; curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" http://${HTTPS_URL#https://}/health
+HTTPS_URL=$(aws cloudformation describe-stacks --stack-name sms-dev-https --query "Stacks[0].Outputs[?OutputKey=='HttpsUrl'].OutputValue" --output text); echo $HTTPS_URL; curl -s -w "\nHTTP %{http_code}\n" $HTTPS_URL/health
 ```
-
-Cần thấy `{"status":"ok",...}`, và dòng sau là `301` chuyển sang `https://`.
 
 Bật cookie chỉ gửi qua HTTPS. Thay `v3` bằng phiên bản đang chạy:
 
@@ -279,7 +279,7 @@ aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yam
 
 Mở địa chỉ HTTPS trên trình duyệt, đăng nhập thử. Từ lúc này, đăng nhập qua URL ALB (HTTP) sẽ không giữ được phiên, vì trình duyệt không gửi cookie `Secure` qua HTTP.
 
-Giới hạn: đoạn CloudFront → ALB vẫn là HTTP, và ALB vẫn nhận trực tiếp từ Internet.
+Giới hạn: đoạn API Gateway → ALB vẫn là HTTP, ALB vẫn nhận trực tiếp từ Internet. Khi tạo lại `sms-dev-app`, URL ALB đổi nên phải deploy lại `sms-dev-https`.
 
 ---
 
@@ -303,15 +303,17 @@ Làm đúng bước 0 → 6 trong account đó; bước 5 tự tạo application
 
 ## Tạm nghỉ và dọn dẹp
 
-Khi nghỉ ngắn: xóa `sms-dev-cdn` nếu có, xóa stack ứng dụng (giữ application và các phiên bản), tắt NAT, dừng RDS:
+Khi nghỉ ngắn: xóa `sms-dev-https` nếu có, xóa stack ứng dụng (giữ application và các phiên bản), tắt NAT, dừng RDS:
 
 ```bash
-aws cloudformation delete-stack --stack-name sms-dev-cdn; aws cloudformation wait stack-delete-complete --stack-name sms-dev-cdn; aws cloudformation delete-stack --stack-name sms-dev-monitoring; aws cloudformation wait stack-delete-complete --stack-name sms-dev-monitoring; aws cloudformation delete-stack --stack-name sms-dev-app; aws cloudformation wait stack-delete-complete --stack-name sms-dev-app && echo "Da xoa app"
+aws cloudformation delete-stack --stack-name sms-dev-https; aws cloudformation wait stack-delete-complete --stack-name sms-dev-https; aws cloudformation delete-stack --stack-name sms-dev-monitoring; aws cloudformation wait stack-delete-complete --stack-name sms-dev-monitoring; aws cloudformation delete-stack --stack-name sms-dev-app; aws cloudformation wait stack-delete-complete --stack-name sms-dev-app && echo "Da xoa app"
 ```
 
 ```bash
 aws cloudformation deploy --stack-name sms-dev-network --template-file infra/network.yaml --parameter-overrides EnableNat=false; aws rds stop-db-instance --db-instance-identifier sms-dev-mysql --query "DBInstance.DBInstanceStatus" --output text
 ```
+
+Chạy các lệnh này **trước khi End Lab hoặc hết giờ lab**: để hệ thống chạy qua lúc hết phiên có thể làm instance bị thay và môi trường chuyển `Red`. Đầu mỗi buổi, kiểm tra `/health`, không chỉ nhìn trạng thái stack.
 
 Không tắt NAT khi stack ứng dụng còn chạy: EC2 cần NAT để đọc Parameter Store và cài gói. RDS tự bật lại sau 7 ngày dừng.
 
@@ -320,7 +322,7 @@ Làm tiếp: `aws rds start-db-instance --db-instance-identifier sms-dev-mysql`,
 Xóa toàn bộ, **ngược thứ tự dựng** (stack đang được stack khác import thì không xóa được):
 
 ```bash
-for s in sms-dev-cdn sms-dev-monitoring sms-dev-app sms-dev-database sms-dev-network; do aws cloudformation delete-stack --stack-name $s; aws cloudformation wait stack-delete-complete --stack-name $s && echo "Da xoa $s"; done
+for s in sms-dev-https sms-dev-monitoring sms-dev-app sms-dev-database sms-dev-network; do aws cloudformation delete-stack --stack-name $s; aws cloudformation wait stack-delete-complete --stack-name $s && echo "Da xoa $s"; done
 ```
 
 Xóa stack database là xóa luôn dữ liệu (dữ liệu thử, nạp lại bằng `schema.sql` + seed). Hai tham số Parameter Store và application `student-manager` không thuộc stack nào, xóa riêng nếu cần.
