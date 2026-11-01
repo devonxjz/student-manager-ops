@@ -1,6 +1,6 @@
 # Hạ tầng bằng CloudFormation
 
-Bốn stack, dựng theo thứ tự. Stack sau đọc giá trị của stack trước qua `!ImportValue`.
+Năm stack, dựng theo thứ tự. Stack sau đọc giá trị của stack trước qua `!ImportValue`.
 
 | Thứ tự | Template | Stack | Phụ trách | Nội dung |
 | --- | --- | --- | --- | --- |
@@ -8,6 +8,7 @@ Bốn stack, dựng theo thứ tự. Stack sau đọc giá trị của stack tr�
 | 2 | `database.yaml` | `sms-dev-database` | Nông Hoàng Anh | RDS MySQL 8.4 `db.t3.micro`, parameter group bắt buộc SSL (tham số `RequireSsl`) |
 | 3 | `app.yaml` | `sms-dev-app` | Trần Lê Thái | Môi trường Elastic Beanstalk `sms-dev-app`, chạy phiên bản code `VersionLabel` |
 | 4 | `monitoring.yaml` | `sms-dev-monitoring` | Nông Hoàng Anh | SNS email, 5 alarm, dashboard `sms-dev` |
+| 5 | `cdn.yaml` | `sms-dev-cdn` | Nông Hoàng Anh | CloudFront trước ALB, cung cấp HTTPS |
 
 ## Quy định
 
@@ -254,6 +255,32 @@ bash scripts/load-test.sh
 
 Alarm và scaling xét CPU trung bình 5 phút, nên chờ ít nhất 10 phút mới thấy thay đổi. Bấm **Confirm subscription** trước khi chạy để nhận email cảnh báo.
 
+### Bước 11. HTTPS qua CloudFront
+
+Cần `sms-dev-app` đang chạy (tab `us-east-1`). Dựng CloudFront, khoảng 5–15 phút:
+
+```bash
+URL=$(aws cloudformation describe-stacks --stack-name sms-dev-app --query "Stacks[0].Outputs[?OutputKey=='ApplicationUrl'].OutputValue" --output text); ALB=${URL#http://}; echo "ALB=$ALB"; aws cloudformation deploy --stack-name sms-dev-cdn --template-file infra/cdn.yaml --parameter-overrides AlbDnsName=$ALB --tags $TAGS
+```
+
+Lấy địa chỉ HTTPS và kiểm tra:
+
+```bash
+HTTPS_URL=$(aws cloudformation describe-stacks --stack-name sms-dev-cdn --query "Stacks[0].Outputs[?OutputKey=='HttpsUrl'].OutputValue" --output text); echo $HTTPS_URL; curl -s $HTTPS_URL/health; echo; curl -s -o /dev/null -w "%{http_code} %{redirect_url}\n" http://${HTTPS_URL#https://}/health
+```
+
+Cần thấy `{"status":"ok",...}`, và dòng sau là `301` chuyển sang `https://`.
+
+Bật cookie chỉ gửi qua HTTPS. Thay `v3` bằng phiên bản đang chạy:
+
+```bash
+aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yaml --parameter-overrides VersionLabel=v3 CookieSecure=true --tags $TAGS
+```
+
+Mở địa chỉ HTTPS trên trình duyệt, đăng nhập thử. Từ lúc này, đăng nhập qua URL ALB (HTTP) sẽ không giữ được phiên, vì trình duyệt không gửi cookie `Secure` qua HTTP.
+
+Giới hạn: đoạn CloudFront → ALB vẫn là HTTP, và ALB vẫn nhận trực tiếp từ Internet.
+
 ---
 
 ## Kiểm tra tag thực tế
@@ -276,10 +303,10 @@ Làm đúng bước 0 → 6 trong account đó; bước 5 tự tạo application
 
 ## Tạm nghỉ và dọn dẹp
 
-Khi nghỉ ngắn: xóa stack ứng dụng (giữ application và các phiên bản), tắt NAT, dừng RDS:
+Khi nghỉ ngắn: xóa `sms-dev-cdn` nếu có, xóa stack ứng dụng (giữ application và các phiên bản), tắt NAT, dừng RDS:
 
 ```bash
-aws cloudformation delete-stack --stack-name sms-dev-monitoring; aws cloudformation wait stack-delete-complete --stack-name sms-dev-monitoring; aws cloudformation delete-stack --stack-name sms-dev-app; aws cloudformation wait stack-delete-complete --stack-name sms-dev-app && echo "Da xoa app"
+aws cloudformation delete-stack --stack-name sms-dev-cdn; aws cloudformation wait stack-delete-complete --stack-name sms-dev-cdn; aws cloudformation delete-stack --stack-name sms-dev-monitoring; aws cloudformation wait stack-delete-complete --stack-name sms-dev-monitoring; aws cloudformation delete-stack --stack-name sms-dev-app; aws cloudformation wait stack-delete-complete --stack-name sms-dev-app && echo "Da xoa app"
 ```
 
 ```bash
@@ -293,7 +320,7 @@ Làm tiếp: `aws rds start-db-instance --db-instance-identifier sms-dev-mysql`,
 Xóa toàn bộ, **ngược thứ tự dựng** (stack đang được stack khác import thì không xóa được):
 
 ```bash
-for s in sms-dev-monitoring sms-dev-app sms-dev-database sms-dev-network; do aws cloudformation delete-stack --stack-name $s; aws cloudformation wait stack-delete-complete --stack-name $s && echo "Da xoa $s"; done
+for s in sms-dev-cdn sms-dev-monitoring sms-dev-app sms-dev-database sms-dev-network; do aws cloudformation delete-stack --stack-name $s; aws cloudformation wait stack-delete-complete --stack-name $s && echo "Da xoa $s"; done
 ```
 
 Xóa stack database là xóa luôn dữ liệu (dữ liệu thử, nạp lại bằng `schema.sql` + seed). Hai tham số Parameter Store và application `student-manager` không thuộc stack nào, xóa riêng nếu cần.

@@ -29,6 +29,11 @@ Parameters:
     Type: String
     Default: vockey
     Description: EC2 Key Pair (Learner Lab dung vockey)
+  CookieSecure:
+    Type: String
+    AllowedValues: ["true", "false"]
+    Default: "false"
+    Description: true khi nguoi dung truy cap qua HTTPS (CloudFront)
   MinSize:
     Type: String
     Default: "1"
@@ -232,7 +237,7 @@ Resources:
           Value: /sms/dev/jwt-secret
         - Namespace: aws:elasticbeanstalk:application:environment
           OptionName: COOKIE_SECURE
-          Value: "false"
+          Value: !Ref CookieSecure
 
 Outputs:
   EnvironmentId:
