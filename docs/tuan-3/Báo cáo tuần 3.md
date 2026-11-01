@@ -293,7 +293,6 @@ Tồn tại: API đăng nhập chưa giới hạn tần suất (rate limit); ứ
 
 Truyền tag chung qua stack cho các tài nguyên hỗ trợ: `Project=StudentMgmt`, `Owner=24110331-24110154`, `Environment=dev`, `ManagedBy=cloudformation`. Tag `Name`, `Tier` khai báo trong template. Phần ngoài stack ở mục 2.2 không nhận tag này, ví dụ bucket S3 của Beanstalk và Application; hai tham số Parameter Store không gắn tag.
 
-> ⏳ Kết quả kiểm tra tag thực tế: chạy lệnh trong `infra/README.md`, điền bảng và chụp `tag-01-kiem-tra.png`.
 
 ## 7. Phân công và thời gian thực hiện
 
@@ -342,7 +341,7 @@ Bốn stack của tuần 3 có mã nguồn trong [`infra/`](../../infra/); phầ
 | Báo cáo                                         | Claude | Viết cấu trúc chung cho báo cáo                               | Viết báo cáo, chuẩn bị nội dung, hình ảnh. Kiểm tra số liệu, bổ sung  |
 
 
-## 12. Công việc chưa hoàn thành
+## 10. Công việc chưa hoàn thành
 
 | Hạng mục | Trạng thái |
 | --- | --- |
@@ -350,7 +349,7 @@ Bốn stack của tuần 3 có mã nguồn trong [`infra/`](../../infra/); phầ
 | HTTPS | Chưa làm; `COOKIE_SECURE=false` |
 
 
-## 14. Liên kết tổng hợp
+## 11. Liên kết tổng hợp
 
 - **Kế hoạch tuần 3:** [Kế hoạch tuần 3.md](K%E1%BA%BF%20ho%E1%BA%A1ch%20tu%E1%BA%A7n%203.md)
 - **Kiểm tra quyền (A1):** [A1-kiem-tra-quyen.md](A1-kiem-tra-quyen.md)
