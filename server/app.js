@@ -7,9 +7,10 @@ const cookieParser = require('cookie-parser');
 const requestLogger = require('./src/middlewares/requestLogger');
 const notFound = require('./src/middlewares/notFound');
 const errorHandler = require('./src/middlewares/errorHandler');
+const config = require('./src/config');
 
 const app = express();
-app.set('trust proxy', 1);
+app.set('trust proxy', config.trustProxy);
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(compression());
 app.use(requestLogger);

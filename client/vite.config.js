@@ -5,7 +5,7 @@ import path from 'path';
 export default defineConfig({
   plugins: [react()],
   resolve: { alias: { '@': path.resolve(__dirname, 'src') } },
-  server: { proxy: { '/api': 'http://localhost:8080' } },
+  server: { proxy: { '/api': process.env.API_URL || 'http://localhost:8080' } },
   build: {
     rollupOptions: {
       output: {
