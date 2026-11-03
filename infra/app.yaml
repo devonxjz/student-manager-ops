@@ -34,6 +34,10 @@ Parameters:
     AllowedValues: ["true", "false"]
     Default: "false"
     Description: true khi nguoi dung truy cap qua HTTPS (CloudFront)
+  TrustProxy:
+    Type: String
+    Default: "2"
+    Description: So proxy truoc Node. 2 = ALB + nginx (HTTP); 3 = API Gateway + ALB + nginx (HTTPS)
   MinSize:
     Type: String
     Default: "1"
@@ -238,6 +242,9 @@ Resources:
         - Namespace: aws:elasticbeanstalk:application:environment
           OptionName: COOKIE_SECURE
           Value: !Ref CookieSecure
+        - Namespace: aws:elasticbeanstalk:application:environment
+          OptionName: TRUST_PROXY
+          Value: !Ref TrustProxy
 
 Outputs:
   EnvironmentId:
