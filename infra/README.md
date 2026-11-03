@@ -274,8 +274,10 @@ HTTPS_URL=$(aws cloudformation describe-stacks --stack-name sms-dev-https --quer
 Bật cookie chỉ gửi qua HTTPS. Thay `v3` bằng phiên bản đang chạy:
 
 ```bash
-aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yaml --parameter-overrides VersionLabel=v3 CookieSecure=true --tags $TAGS
+aws cloudformation deploy --stack-name sms-dev-app --template-file infra/app.yaml --parameter-overrides VersionLabel=v4 CookieSecure=true TrustProxy=3 --tags $TAGS
 ```
+
+`TrustProxy=3` là bắt buộc khi đi qua API Gateway: nếu để 2, mọi người dùng sẽ bị gộp thành một IP trong rate limit. Thay `v4` bằng phiên bản đang chạy.
 
 Mở địa chỉ HTTPS trên trình duyệt, đăng nhập thử. Từ lúc này, đăng nhập qua URL ALB (HTTP) sẽ không giữ được phiên, vì trình duyệt không gửi cookie `Secure` qua HTTP.
 
