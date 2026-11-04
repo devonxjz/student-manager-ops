@@ -33,7 +33,7 @@ Parameters:
     Type: String
     AllowedValues: ["true", "false"]
     Default: "false"
-    Description: true khi nguoi dung truy cap qua HTTPS (CloudFront)
+    Description: true khi nguoi dung truy cap qua HTTPS (API Gateway, stack sms-dev-https)
   TrustProxy:
     Type: String
     Default: "2"
