@@ -235,14 +235,13 @@ Chi tiết theo [worklog](worklog-tuan-4.md). Số giờ ước lượng lại s
 
 **Nhóm có sử dụng AI trong tuần 4** (Claude). Mọi thao tác trên AWS do sinh viên thực hiện và chạy thật trên Learner Lab.
 
-| Hạng mục | Công cụ | Phần AI hỗ trợ | Phần sinh viên thực hiện |
-| --- | --- | --- | --- |
-| Kế hoạch, khung báo cáo | Claude | Đề xuất việc, dựng khung | Duyệt, điền kết quả thật |
+| Hạng mục | Công cụ | Phần AI hỗ trợ                              | Phần sinh viên thực hiện |
+| --- | --- |---------------------------------------------| --- |
+| Kế hoạch, khung báo cáo | Claude | Đề xuất việc, dựng khung                    | Duyệt, điền kết quả thật |
 | Rate limit, `trust proxy`, `seed-demo.js`, tham số `TrustProxy` | Claude | Hỗ trợ viết code và test (ghi trong commit) | Trần Lê Thái chạy, kiểm tra, giải thích được khi vấn đáp |
-| `infra/https.yaml` (và bản CloudFront đã bỏ) | Claude | Viết template, soạn lệnh thử API Gateway và ACM | Nông Hoàng Anh chạy thử trên Learner Lab, phát hiện CloudFront bị chặn, dựng stack, kiểm tra đăng nhập qua HTTPS |
-| Sơ đồ kiến trúc cuối | Claude | Vẽ sơ đồ bằng script theo đặc tả | Nông Hoàng Anh chốt nội dung (thành phần, luồng, ghi chú), đối chiếu với hệ thống thật |
-| Thử chịu lỗi (A2), dọn tài nguyên (A5), kiểm tra tag | Claude | Soạn lệnh CLI, cách đo thời gian | Nông Hoàng Anh chạy trên account `4328-6392-4671`, ghi số liệu, chụp minh chứng |
-| Nội dung báo cáo | Claude | Hỗ trợ viết, rà soát câu chữ | Hai thành viên cung cấp kết quả thật, duyệt nội dung |
+| `infra/https.yaml` (và bản CloudFront đã bỏ) | Claude | Viết template theo yêu cầu                  | Nông Hoàng Anh soạn lệnh thử API Gateway và ACM chạy thử trên Learner Lab, phát hiện CloudFront bị chặn, dựng stack, kiểm tra đăng nhập qua HTTPS |
+| Sơ đồ kiến trúc cuối | Claude | Vẽ sơ đồ bằng script theo đặc tả            | Nông Hoàng Anh chốt nội dung (thành phần, luồng, ghi chú), đối chiếu với hệ thống thật |
+| Thử chịu lỗi (A2), dọn tài nguyên (A5), kiểm tra tag | Claude | Soạn lệnh CLI, cách đo thời gian            | Nông Hoàng Anh chạy trên account `4328-6392-4671`, ghi số liệu, chụp minh chứng |
 
 ## 10. Khó khăn gặp phải và cách xử lý
 
